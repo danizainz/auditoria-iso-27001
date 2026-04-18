@@ -1,0 +1,158 @@
+/* Estilo Principal e Hero */
+.lp-container {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.lp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.lp-nav-buttons { display: flex; gap: 20px; align-items: center; }
+.lp-login-link { text-decoration: none; color: #374151; font-weight: 600; }
+.lp-signup-btn {
+    text-decoration: none; background-color: #6366f1; color: white;
+    padding: 10px 22px; border-radius: 8px; font-weight: 600; transition: 0.2s;
+}
+.lp-signup-btn:hover { background-color: #4f46e5; }
+
+.lp-main {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 80px 20px 60px 20px;
+}
+
+.lp-title {
+    font-size: 60px; font-weight: 800; color: #111827;
+    margin-bottom: 20px; letter-spacing: -1.5px;
+}
+
+.lp-subtitle {
+    font-size: 20px; color: #4b5563; max-width: 700px;
+    margin-bottom: 40px; line-height: 1.5;
+}
+
+.lp-cta-group { display: flex; gap: 15px; }
+.lp-btn-primary {
+    text-decoration: none; background-color: #6366f1; color: white;
+    padding: 16px 32px; border-radius: 10px; font-weight: 700; transition: 0.2s;
+}
+.lp-btn-primary:hover { background-color: #4f46e5; }
+
+.lp-btn-secondary {
+    text-decoration: none; background-color: white; color: #1f2937;
+    padding: 16px 32px; border-radius: 10px; border: 1px solid #d1d5db; font-weight: 700;
+}
+
+/* --- SECÇÃO DE FUNCIONALIDADES (CARDS) --- */
+.lp-features-section {
+    background-color: #ffffff;
+    padding: 60px 40px 100px 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.lp-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    width: 100%;
+}
+
+.lp-feature-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: left;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.lp-feature-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.lp-feature-icon {
+    font-size: 32px;
+    margin-bottom: 15px;
+    background-color: #f3f4f6;
+    display: inline-block;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.lp-feature-card h3 { color: #111827; margin-bottom: 10px; font-size: 18px; }
+.lp-feature-card p { color: #6b7280; line-height: 1.5; font-size: 15px; margin-bottom: 20px; }
+.lp-learn-more { color: #6366f1; font-weight: 600; font-size: 14px; cursor: pointer; }
+
+/* --- BANNER ROXO NO FUNDO --- */
+.lp-bottom-banner {
+    background-color: #6366f1;
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lp-bottom-banner h2 { font-size: 40px; font-weight: 800; max-width: 800px; margin-bottom: 30px; letter-spacing: -1px; }
+
+.lp-banner-benefits {
+    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+    margin-bottom: 40px; font-weight: 500; font-size: 16px;
+}
+
+.lp-banner-ctas .banner-btn {
+    background-color: #111827; 
+    color: white;
+}
+.lp-banner-ctas .banner-btn:hover { background-color: #1f2937; }
+
+/* --- FOOTER (RODAPÉ) --- */
+.lp-footer {
+    background-color: #ffffff;
+    padding: 60px 60px 20px 60px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.lp-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-bottom: 60px;
+}
+
+.lp-footer-col h4 {
+    color: #111827; font-size: 16px; margin-bottom: 20px; font-weight: 700;
+}
+
+.lp-footer-col a {
+    display: block; color: #6b7280; text-decoration: none;
+    margin-bottom: 12px; font-size: 14px; transition: 0.2s;
+}
+
+.lp-footer-col a:hover { color: #6366f1; }
+
+.lp-footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid #e5e7eb; padding-top: 20px; color: #9ca3af; font-size: 14px;
+}
+
+.lp-footer-legal { display: flex; gap: 20px; }
+.lp-footer-legal a { color: #9ca3af; text-decoration: none; }
+.lp-footer-legal a:hover { color: #6b7280; }

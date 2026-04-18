@@ -1,0 +1,157 @@
+/* O container principal limpo e brilhante */
+.player-container {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    color: #111827;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Cabeçalho branco com linha subtil */
+.player-header {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.player-badge {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.player-header h2 { margin: 8px 0 0 0; font-size: 22px; color: #111827; }
+
+/* Barra de progresso azul */
+.player-progress-bg { height: 4px; background-color: #f3f4f6; }
+.player-progress-fill { height: 100%; background-color: #4f46e5; transition: width 0.4s ease; }
+
+.player-body { padding: 40px 30px; }
+
+.slide-title { color: #6b7280; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: bold; }
+
+.slide-texto-container {
+    font-size: 18px;
+    line-height: 2.2;
+    margin-bottom: 35px;
+    color: #374151;
+}
+
+/* Os Espaços em Branco (Estilo Papel/Formulário) */
+.blank-slot {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 2px dashed #d1d5db;
+    margin: 0 5px;
+    padding: 0 8px;
+    color: #9ca3af;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: #f9fafb;
+    border-radius: 4px 4px 0 0;
+}
+
+.blank-slot:hover { background-color: #f3f4f6; }
+
+.blank-slot.filled {
+    color: #4f46e5;
+    border-bottom: 2px solid #4f46e5;
+    background-color: #eef2ff;
+    font-weight: 600;
+}
+
+.blank-slot.error-slot { color: #ef4444; border-bottom-color: #ef4444; background-color: #fef2f2; }
+.blank-slot.success-slot { color: #10b981; border-bottom-color: #10b981; background-color: #ecfdf5; }
+
+/* Contentor das palavras cinza claro */
+.opcoes-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 25px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+}
+
+.btn-opcao {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.btn-opcao:hover:not(:disabled) { border-color: #4f46e5; background: #f8fafc; color: #4f46e5; transform: translateY(-1px); }
+.btn-opcao:disabled { opacity: 0.4; box-shadow: none; }
+
+/* Caixa de Feedback Refinada */
+.feedback-box {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.feedback-box.correto { background: #ecfdf5; border-color: #10b981; }
+.feedback-box.errado { background: #fef2f2; border-color: #ef4444; }
+
+.feedback-box h4 { margin: 0 0 10px 0; font-size: 16px; }
+.feedback-box.correto h4 { color: #047857; }
+.feedback-box.errado h4 { color: #b91c1c; }
+.feedback-box p { margin: 0 0 8px 0; font-size: 15px; line-height: 1.5; color: #374151; }
+
+/* Estilo para as justificações dos erros */
+.erro-justificacao {
+    display: block;
+    font-size: 14px;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 8px;
+    color: #991b1b;
+}
+
+.player-footer {
+    padding: 20px 30px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slide-counter { color: #6b7280; font-size: 14px; font-weight: 500; }
+
+.btn-validar, .btn-avancar {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-validar { background: #4f46e5; color: #ffffff; }
+.btn-validar:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+.btn-validar:hover:not(:disabled) { background: #4338ca; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+
+.btn-avancar.correto { background: #10b981; color: white; }
+.btn-avancar.errado { background: #ef4444; color: white; }

@@ -1,0 +1,59 @@
+/* --- Dashboard.css --- */
+
+.dash-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f4f7fa; 
+    font-family: 'Inter', sans-serif;
+}
+
+/* Área de Conteúdo */
+.dash-content {
+    margin-left: 260px; /* Igual à largura exata da sidebar */
+    flex: 1;
+    padding: 40px;
+    box-sizing: border-box; /* Garante que o padding não rebenta com a página para a direita */
+    width: calc(100% - 260px);
+}
+
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Cards de Organização */
+.org-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.org-card {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+    transition: 0.3s;
+}
+
+.org-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+.org-card h3 { margin: 0 0 10px 0; color: #111827; }
+.org-card p { color: #6b7280; font-size: 14px; margin-bottom: 20px; }
+
+.btn-audit {
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}

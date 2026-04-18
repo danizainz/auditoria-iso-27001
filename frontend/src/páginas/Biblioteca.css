@@ -1,0 +1,260 @@
+
+.bib-hero {
+    background: linear-gradient(135deg, #eef2ff 0%, #ede9fe 100%);
+    padding: 50px 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.bib-hero h1 {
+    color: #111827;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+}
+
+.bib-hero p {
+    color: #4b5563;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+/* CAIXA DE PESQUISA */
+.bib-search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.search-icon { font-size: 20px; margin-right: 10px; color: #9ca3af; }
+
+.bib-search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 10px 0;
+}
+
+/* FILTROS (PILLS) */
+.bib-filtros {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.bib-pill {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    padding: 8px 20px;
+    border-radius: 20px;
+    color: #4b5563;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.bib-pill:hover { border-color: #6366f1; color: #6366f1; }
+.bib-pill.active { background-color: #6366f1; color: white; border-color: #6366f1; }
+
+/* GRELHA DE RECURSOS */
+.bib-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.bib-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Garante que os cartões esticam todos por igual */
+}
+
+.bib-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+/* CAPAS E ÍCONES */
+.bib-cover-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.bib-card-icon {
+    height: 160px; /* Igual à imagem para não haver saltos no layout */
+    background-color: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* CONTEÚDO DO CARTÃO */
+.bib-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Isto é a magia que empurra o resto para baixo */
+}
+
+.bib-badge {
+    align-self: flex-start;
+    background-color: #eef2ff;
+    color: #4f46e5;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.bib-card-content h3 { color: #111827; font-size: 18px; margin: 0 0 10px 0; }
+.bib-card-content p { color: #6b7280; font-size: 14px; margin-bottom: 20px; }
+
+/* ÁREA DO BOTÃO */
+.bib-btn-wrapper {
+    margin-top: auto; /* Cola o botão ao fundo do cartão */
+    width: 100%;
+}
+
+.bib-btn-abrir {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+/* Botão Ativo (Azul) */
+a.bib-btn-abrir {
+    background-color: #4f46e5;
+    color: white;
+}
+
+a.bib-btn-abrir:hover {
+    background-color: #4338ca;
+}
+
+/* Botão Desativado (Cinzento) */
+button.bib-btn-abrir:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    border: 1px solid #e5e7eb;
+}
+
+/* ESTADOS EXTRA */
+.bib-loading, .bib-empty {
+    text-align: center;
+    padding: 50px;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+/* NOVA SECÇÃO: INTRODUÇÃO À ISO 27001 */
+.bib-intro-section {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.bib-intro-text h2 {
+    color: #111827;
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.bib-intro-text p {
+    color: #4b5563;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Os 3 Cartões dos Pilares (CIA) */
+.bib-cia-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.bib-cia-card {
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.bib-cia-card:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.cia-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.bib-cia-card h4 {
+    color: #1f2937;
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.bib-cia-card p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Ajuste no cabeçalho dos Recursos */
+.bib-recursos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.bib-recursos-header h2 {
+    color: #111827;
+    font-size: 22px;
+    margin: 0;
+}
+
+.bib-filtros {
+    margin-bottom: 0; /* Removido o margin bottom antigo pois agora está no flexbox */
+}

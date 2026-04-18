@@ -1,0 +1,408 @@
+
+.def-page-wrapper {
+    background-color: #f4f5f7;
+    min-height: 100vh;
+    margin: -40px;
+    padding: 40px;
+}
+
+.def-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.def-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.def-header h1 {
+    color: #111827;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.def-header p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* 🌟 CLASSES NOVAS PARA AS DEFINIÇÕES DA CONTA (SETTINGS) */
+.def-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #c7d2fe;
+}
+
+/* Tabs de Navegação */
+.def-tabs {
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 25px;
+    padding-bottom: 2px;
+}
+
+.def-tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #6b7280;
+    border-bottom: 2px solid transparent;
+    transition: 0.2s;
+}
+
+.def-tab-btn.active {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
+}
+
+/* Layout em Grelha para os Cartões */
+.def-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.def-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Cartões (Cards) */
+.def-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.def-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.def-card-header h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 16px;
+}
+
+/* Formulários e Textos */
+.def-form-group {
+    margin-bottom: 20px;
+}
+
+.def-label {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.def-value {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.def-value-box {
+    background-color: #f3f4f6;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: monospace;
+    color: #4b5563;
+}
+
+.def-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    outline: none;
+    transition: 0.2s;
+}
+
+.def-input:focus {
+    border-color: #4f46e5;
+}
+
+.def-info-box {
+    background-color: #f9fafb;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px dashed #d1d5db;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.def-warning-box {
+    margin-top: 20px;
+    background-color: #fef3c7;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #fde68a;
+    font-size: 12px;
+    color: #92400e;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Botões */
+.def-btn-edit {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #4f46e5;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.def-btn-edit:hover { background: #f3f4f6; }
+
+.def-btn-save {
+    background: #10b981;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.def-btn-cancel {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #6b7280;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.def-btn-primary {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.def-btn-primary:hover { background-color: #e0e7ff; }
+
+/* 🌟 O TOGGLE SWITCH DO 2FA */
+.def-toggle-wrapper {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.def-toggle-text strong {
+    display: block;
+    font-size: 14px;
+    color: #111827;
+}
+
+.def-toggle-text span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.def-toggle {
+    width: 44px;
+    height: 24px;
+    background-color: #e5e7eb;
+    border-radius: 12px;
+    position: relative;
+    cursor: not-allowed;
+    transition: background-color 0.3s;
+    opacity: 0.6;
+}
+
+.def-toggle.editable {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.def-toggle.active {
+    background-color: #10b981;
+}
+
+.def-toggle-knob {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: left 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.def-toggle.active .def-toggle-knob {
+    left: 22px;
+}
+
+/* ==========================================
+   MODAL DO QR CODE (A JANELA FLUTUANTE)
+   ========================================== */
+
+/* O fundo escurecido que cobre o site todo */
+.def-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(17, 24, 39, 0.75); /* Escuro com transparência */
+    backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Garante que fica por cima de tudo */
+}
+
+/* O cartão branco no centro */
+.def-modal-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: defModalPop 0.3s ease-out; /* Pequena animação ao abrir */
+}
+
+@keyframes defModalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.def-modal-card h2 {
+    margin: 0 0 10px 0;
+    color: #111827;
+    font-size: 20px;
+}
+
+.def-modal-card p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Onde aparece o QR Code */
+.def-qr-box {
+    background-color: #f9fafb;
+    border: 2px dashed #e5e7eb;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.def-qr-box img {
+    max-width: 200px;
+    height: auto;
+}
+
+/* O input dos 6 dígitos (estilo grande) */
+.def-modal-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    border: 2px solid #4f46e5;
+    font-size: 28px;
+    letter-spacing: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #111827;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Botões do Modal */
+.def-modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.def-modal-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+.def-btn-confirm {
+    background-color: #4f46e5;
+    color: white;
+}
+
+.def-btn-confirm:hover {
+    background-color: #4338ca;
+}
+
+.def-btn-cancel-modal {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.def-btn-cancel-modal:hover {
+    background-color: #e5e7eb;
+}
+
+.def-modal-input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    border: 2px solid #4f46e5;
+    font-size: 28px;
+    letter-spacing: 8px; /* Dá espaço entre os números */
+    text-align: center;
+    font-weight: bold;
+    color: #111827;
+    outline: none;
+    box-sizing: border-box;
+}

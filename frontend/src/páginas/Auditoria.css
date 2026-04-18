@@ -1,0 +1,101 @@
+/* Layout Global do Formulário */
+.audit-page-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 10px;
+}
+.audit-page-header p { color: #6b7280; font-size: 13px; margin: 0 0 5px 0; font-weight: 600; }
+.audit-page-header h2 { margin: 0; font-size: 22px; color: #111827; }
+
+.audit-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 850px;
+}
+
+/* CARDS DA PÁGINA 1 */
+.input-card {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 20px;
+}
+.input-card label { display: block; font-size: 14px; font-weight: 600; color: #4b5563; margin-bottom: 10px; }
+.input-card input, .input-card textarea {
+    width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 15px; outline: none;
+}
+.input-card input:focus, .input-card textarea:focus { border-color: #6366f1; }
+
+/* CANVAS DE ASSINATURA */
+.signature-box {
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    cursor: crosshair;
+}
+.sigCanvas { width: 100%; height: 100%; border-radius: 8px; }
+.btn-clear-sig { background: none; border: none; color: #ef4444; font-size: 13px; font-weight: bold; cursor: pointer; }
+
+/* CABEÇALHO DAS SECÇÕES (PÁGINA 2) */
+.section-header {
+    background-color: #6366f1; 
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
+}
+.section-header h3 { margin: 0; font-size: 15px; font-weight: 700; text-transform: uppercase; }
+
+.section-body {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 0; 
+}
+
+/* PERGUNTAS DENTRO DA SECÇÃO */
+.question-card {
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.question-card:last-child { border-bottom: none; }
+.question-text { margin: 0 0 15px 0; font-size: 15px; color: #1f2937; }
+
+/* BOTÕES SIM / NÃO / NA */
+.sc-btn-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.sc-btn {
+    flex: 1; padding: 12px; border: 1px solid #d1d5db; background: white;
+    border-radius: 6px; font-weight: 700; font-size: 14px; color: #6b7280;
+    cursor: pointer; text-transform: uppercase; transition: 0.1s;
+}
+
+
+.sc-sim.active { background-color: #22c55e; border-color: #22c55e; color: white; }
+.sc-nao.active { background-color: #ef4444; border-color: #ef4444; color: white; }
+.sc-na.active { background-color: #f3f4f6; border-color: #d1d5db; color: #374151; }
+
+/* QUICK ACTIONS (Links em baixo) */
+.quick-actions {
+    display: flex; justify-content: flex-end; gap: 20px; border-top: 1px dashed #e5e7eb; padding-top: 10px;
+}
+.qa-link {
+    background: none; border: none; color: #6366f1; font-size: 13px;
+    font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;
+}
+.qa-link:hover { text-decoration: underline; }
+
+/* NAVEGAÇÃO ENTRE PÁGINAS */
+.bottom-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.btn-next-page {
+    background-color: #6366f1; color: white; border: none; padding: 12px 24px;
+    border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;
+}
+.btn-next-page:hover { background-color: #4f46e5; }

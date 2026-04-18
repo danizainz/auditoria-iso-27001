@@ -1,0 +1,103 @@
+/* Sidebar.css */
+
+/* Contentor principal da barra lateral */
+.dash-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  width: 260px; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.02);
+  z-index: 1000; 
+}
+
+/* O Logo lá em cima */
+.dash-logo {
+  font-weight: bold;
+  font-size: 22px;
+  padding: 25px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #1f2937;
+}
+
+/* O contentor dos links do menu */
+.dash-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  gap: 8px; /* Espaço entre cada botão do menu */
+}
+
+/* Os botões do menu */
+.dash-menu-item {
+  text-decoration: none;
+  color: #4b5563;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espaço entre o ícone e o texto */
+}
+
+/* Efeito ao passar o rato */
+.dash-menu-item:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+/* O botão que está ativo/selecionado no momento */
+.dash-menu-item.active {
+  background-color: #eef2ff; /* Fundo azul clarinho */
+  color: #4f46e5; /* Texto azul forte */
+  font-weight: 600;
+}
+
+/* --- A MAGIA PARA O FUNDO --- */
+.sidebar-bottom {
+  margin-top: auto; /* Isto empurra esta secção toda para o fundo da barra! */
+  padding: 20px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #fafafa;
+}
+
+.sidebar-profile-btn {
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-profile-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.logout-btn {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.logout-btn:hover {
+  background-color: #fca5a5;
+}
