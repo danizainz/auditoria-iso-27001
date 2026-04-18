@@ -5,9 +5,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-81ke!z)-d%pi4lldm@ft-l46ilip@+2u8w#33!%_%(p!b@0h4)'
 
+# Para o projeto de faculdade podes deixar em True, mas em ambiente super profissional isto fica False
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'api.auditoria-iso-27001.pt',
+    'auditoria-iso-27001.onrender.com', 
+    'localhost', 
+    '127.0.0.1'
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -80,10 +86,17 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Permite que o Frontend (React) aceda à API
-CORS_ALLOW_ALL_ORIGINS = True
+# Permite que o Frontend (React) aceda à API com segurança
+CORS_ALLOWED_ORIGINS = [
+    "https://auditoria-iso-27001.pt",
+    "https://auditoria-iso-27001.vercel.app",
+    "http://localhost:3000",
+]
+
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
+    "https://auditoria-iso-27001.pt",
+    "https://auditoria-iso-27001.vercel.app",
+    "http://localhost:3000",
 ]
 
 # Configuração do Sistema de Tokens (JWT)
@@ -104,8 +117,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
 EMAIL_HOST_USER = 'dani.carvalho2928@gmail.com' 
-
-
 EMAIL_HOST_PASSWORD = 'kuinocbqvhufrxls'
