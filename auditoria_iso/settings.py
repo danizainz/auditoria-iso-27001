@@ -63,10 +63,10 @@ WSGI_APPLICATION = 'auditoria_iso.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_auditoria_iso',
-        'USER': 'root',
-        'PASSWORD': 'Snolinhaa123', 
-        'HOST': '127.0.0.1',
+        'NAME': 'bbqnkmnkevlurxgomgts',
+        'USER': 'ugczsqulplqpeqke',
+        'PASSWORD': 'bQEi7mPlde1JtieF1kRT', 
+        'HOST': 'bbqnkmnkevlurxgomgts-mysql.services.clever-cloud.com',
         'PORT': '3306',
     }
 }
