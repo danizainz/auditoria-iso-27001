@@ -59,9 +59,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'auditoria_iso.wsgi.application'
 
-# Database - Configuração para MySQL
+# Database - Configuração para base de dados na Clever Cloud (MySQL)
+
+
 DATABASES = {
     'default': {
+
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bbqnkmnkevlurxgomgts',
         'USER': 'ugczsqulplqpeqke',
@@ -70,6 +73,19 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+
+#Database - Configuração para base de dados local (MySQL)
+#DATABASES = {
+    #'default': {
+        #'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'db_auditoria_iso', 
+        #'USER': 'root',                             
+        #'PASSWORD': 'Snolinhaa123',                            
+        #'HOST': '127.0.0.1',
+        #'PORT': '3306',
+    #}
+#}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

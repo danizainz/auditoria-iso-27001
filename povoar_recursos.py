@@ -14,21 +14,21 @@ recursos = [
         "titulo": "O que é um SGSI? (Fundamentos ISO 27001)",
         "tipo": "Vídeo",
         "desc": "Vídeo curto a explicar os 6 pilares de um Sistema de Gestão de Segurança da Informação.",
-        "icone": "🎥",
+        "icone": "-",
         "link": "https://www.youtube.com/watch?v=384lQn9Xqs0"
     },
     {
         "titulo": "Treino de Phishing: Como não ser enganado",
         "tipo": "Vídeo",
         "desc": "Formação essencial de consciencialização para todos os colaboradores da empresa.",
-        "icone": "🎣",
+        "icone": "-",
         "link": "https://www.youtube.com/watch?v=Y7zNlEMDmI4" # Link educativo genérico de phishing
     },
     {
         "titulo": "Segurança no Teletrabalho e Redes Wi-Fi",
         "tipo": "Vídeo",
         "desc": "Boas práticas para proteger a informação da empresa quando trabalhas a partir de casa ou cafés.",
-        "icone": "💻",
+        "icone": "-",
         "link": "https://www.youtube.com/watch?v=8OEE_BwQc-M"
     },
 
@@ -37,21 +37,21 @@ recursos = [
         "titulo": "Política de Segurança da Informação",
         "tipo": "Documento",
         "desc": "O documento central ('Pai') que dita as regras e objetivos de segurança de toda a organização.",
-        "icone": "🛡️",
+        "icone": "-",
         "link": ""
     },
     {
         "titulo": "Política de Controlo de Acessos",
         "tipo": "Documento",
         "desc": "Regras obrigatórias para a criação de senhas fortes, MFA e gestão de privilégios de utilizadores.",
-        "icone": "🔐",
+        "icone": "-",
         "link": ""
     },
     {
         "titulo": "Política de Secretária Limpa e Ecrã Bloqueado",
         "tipo": "Documento",
         "desc": "Normas físicas para evitar exposição de documentos confidenciais no escritório.",
-        "icone": "🧹",
+        "icone": "-",
         "link": ""
     },
 
@@ -60,21 +60,21 @@ recursos = [
         "titulo": "Declaração de Aplicabilidade (SoA)",
         "tipo": "Template",
         "desc": "Folha de cálculo com os 93 controlos do Anexo A para definir o que se aplica à tua empresa.",
-        "icone": "📊",
+        "icone": "-",
         "link": ""
     },
     {
         "titulo": "Inventário de Ativos de Informação",
         "tipo": "Template",
         "desc": "Modelo para registar todos os servidores, portáteis, software e dados sensíveis da organização.",
-        "icone": "🗄️",
+        "icone": "-",
         "link": ""
     },
     {
         "titulo": "Registo de Incidentes de Segurança",
         "tipo": "Template",
         "desc": "Formulário padrão para reportar quebras de segurança, perda de equipamentos ou ataques cibernéticos.",
-        "icone": "🚨",
+        "icone": "-",
         "link": ""
     }
 ]
