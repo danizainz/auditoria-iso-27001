@@ -91,12 +91,14 @@ CORS_ALLOWED_ORIGINS = [
     "https://auditoria-iso-27001.pt",
     "https://auditoria-iso-27001.vercel.app",
     "http://localhost:3000",
+    "https://www.auditoria-iso-27001.pt",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://auditoria-iso-27001.pt",
     "https://auditoria-iso-27001.vercel.app",
     "http://localhost:3000",
+    "https://www.auditoria-iso-27001.pt",
 ]
 
 # Configuração do Sistema de Tokens (JWT)

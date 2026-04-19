@@ -21,7 +21,7 @@ function Registo() {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      await axios.post('http://localhost:8000/api/registar/', {
+      await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
         nome_completo: dados.nome,
         email: dados.email,
         password: dados.password
@@ -38,7 +38,7 @@ function Registo() {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      const res = await axios.post('http://localhost:8000/api/verificar-otp/', {
+      const res = await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
         email: dados.email,
         codigo: dados.codigo
       });
@@ -62,7 +62,7 @@ function Registo() {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      await axios.post('http://localhost:8000/api/finalizar-perfil/', {
+      await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
         objetivo: dados.objetivo,
         empresa: dados.empresa
       }, {
