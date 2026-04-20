@@ -115,7 +115,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://auditoria-iso-27001.vercel.app",
     "http://localhost:3000",
     "https://www.auditoria-iso-27001.pt",
+    "https://auditoria-iso-27001.onrender.com", 
 ]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
 
 # Configuração do Sistema de Tokens (JWT)
 REST_FRAMEWORK = {
