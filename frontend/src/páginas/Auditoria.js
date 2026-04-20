@@ -36,13 +36,13 @@ function Auditoria() {
         const headers = { Authorization: `Bearer ${token}` };
 
         const pedidos = [
-          axios.get('http://127.0.0.1:8000/api/questoes/', { headers }),
-          axios.get('http://127.0.0.1:8000/api/organizacoes/', { headers })
+          axios.get('https://auditoria-iso-27001.onrender.com/api/questoes/', { headers }),
+          axios.get('https://auditoria-iso-27001.onrender.com/api/organizacoes/', { headers })
         ];
 
         if (id) {
-          pedidos.push(axios.get(`http://127.0.0.1:8000/api/auditorias/${id}/`, { headers }));
-          pedidos.push(axios.get('http://127.0.0.1:8000/api/respostas/', { headers }));
+          pedidos.push(axios.get(`https://auditoria-iso-27001.onrender.com/api/auditorias/${id}/`, { headers }));
+          pedidos.push(axios.get('https://auditoria-iso-27001.onrender.com/api/respostas/', { headers }));
         }
 
         const resultados = await Promise.all(pedidos);
@@ -219,7 +219,7 @@ function Auditoria() {
         if (empresaExistente) {
           orgIdFinal = empresaExistente.id;
         } else {
-          const resNovaOrg = await axios.post('http://127.0.0.1:8000/api/organizacoes/', {
+          const resNovaOrg = await axios.post('https://auditoria-iso-27001.onrender.com/api/organizacoes/', {
             nome: info.nomeOrganizacao.trim(),
             setor: 'Não Definido'
           }, { headers: headersJSON });
@@ -232,11 +232,11 @@ function Auditoria() {
           estado: 1,
           assinatura_base64: info.assinaturaData 
         };
-        const responseAuditoria = await axios.post('http://127.0.0.1:8000/api/auditorias/', payloadAuditoria, { headers: headersJSON });
+        const responseAuditoria = await axios.post('https://auditoria-iso-27001.onrender.com/api/auditorias/', payloadAuditoria, { headers: headersJSON });
         auditoriaId = responseAuditoria.data.id; 
       } else {
         const apagadores = respostasAntigas.map(r => 
-          axios.delete(`http://127.0.0.1:8000/api/respostas/${r.id}/`, { headers: headersJSON })
+          axios.delete(`https://auditoria-iso-27001.onrender.com/api/respostas/${r.id}/`, { headers: headersJSON })
         );
         await Promise.all(apagadores);
       }
@@ -254,7 +254,7 @@ function Auditoria() {
               if (sp.evidencia) formData.append('evidencia', sp.evidencia);
 
               promessasRespostas.push(
-                axios.post('http://127.0.0.1:8000/api/respostas/', formData, { headers: headersFicheiros })
+                axios.post('https://auditoria-iso-27001.onrender.com/api/respostas/', formData, { headers: headersFicheiros })
               );
             }
           });

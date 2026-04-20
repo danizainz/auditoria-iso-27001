@@ -11,7 +11,7 @@ function EsqueciPassword() {
     e.preventDefault();
     try {
       // Este é o link oficial da biblioteca no Django
-      await axios.post('http://127.0.0.1:8000/api/password_reset/', { email });
+      await axios.post('https://auditoria-iso-27001.onrender.com/api/password_reset/', { email });
       setMensagem('Se este e-mail existir, receberás instruções em breve!');
     } catch (err) {
       setMensagem('Ocorreu um erro. Verifica o e-mail introduzido.');

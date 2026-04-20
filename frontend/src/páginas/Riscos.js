@@ -16,7 +16,7 @@ function Riscos() {
   useEffect(() => {
     const carregarRiscos = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/auditorias-tabela/', {
+        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/auditorias-tabela/', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         

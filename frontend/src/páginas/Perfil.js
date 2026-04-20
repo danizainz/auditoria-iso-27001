@@ -21,7 +21,7 @@ function Perfil() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token') || localStorage.getItem('access');
-        const response = await axios.get('http://127.0.0.1:8000/api/user-profile/', {
+        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/user-profile/', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUserData(response.data);

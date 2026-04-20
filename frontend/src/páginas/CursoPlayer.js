@@ -90,7 +90,7 @@ function CursoPlayer() {
         
         
         // O ID que o React usa para escolher o curso (ex: "curso_phishing") é o mesmo que o Django espera para gravar na BD!
-        await axios.post('http://127.0.0.1:8000/api/atualizar-progresso/', 
+        await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-progresso/', 
           { 
             recurso_id: cursoData.id_bd, 
             status: 'Concluído' 

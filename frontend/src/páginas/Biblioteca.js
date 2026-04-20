@@ -16,7 +16,7 @@ function Biblioteca() {
     const buscarRecursos = async () => {
       try {
         const token = localStorage.getItem('token') || localStorage.getItem('access');
-        const response = await axios.get('http://127.0.0.1:8000/api/recursos-educativos/', {
+        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/recursos-educativos/', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -55,7 +55,7 @@ function Biblioteca() {
     // para Django: Gravar como "Em andamento"
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('http://127.0.0.1:8000/api/atualizar-progresso/', 
+      await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-progresso/', 
         { recurso_id: recurso.id, status: 'Em andamento' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -141,10 +141,10 @@ function Biblioteca() {
               const isCurso = recurso.tipo === 'Vídeo' || recurso.tipo === 'Curso';
 
               let linkDestino = isCurso ? null : (recurso.ficheiro || recurso.url); 
-              if (linkDestino && linkDestino.startsWith('/')) linkDestino = `http://127.0.0.1:8000${linkDestino}`;
+              if (linkDestino && linkDestino.startsWith('/')) linkDestino = `https://auditoria-iso-27001.onrender.com${linkDestino}`;
 
               let linkCapa = recurso.capa || recurso.imagem; 
-              if (linkCapa && !linkCapa.startsWith('http')) linkCapa = `http://127.0.0.1:8000${linkCapa}`;
+              if (linkCapa && !linkCapa.startsWith('http')) linkCapa = `https://auditoria-iso-27001.onrender.com${linkCapa}`;
 
               return (
                 <div key={recurso.id} className="bib-card">

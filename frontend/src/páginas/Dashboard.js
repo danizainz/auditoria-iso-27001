@@ -14,7 +14,7 @@ function Dashboard() {
   useEffect(() => {
     const carregarDashboard = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/dashboard-real/', {
+        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/dashboard-real/', {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setDados(response.data);
@@ -39,7 +39,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
       // Avisa o Django que o gajo clicou para começar/continuar
-      await axios.post('http://127.0.0.1:8000/api/atualizar-progresso/', 
+      await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-progresso/', 
         { recurso_id: recursoId, status: 'Em andamento' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
