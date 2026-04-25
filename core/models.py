@@ -63,15 +63,30 @@ class Questao(models.Model):
 
 # TABELA DAS SUB-PERGUNTAS PRÁTICAS
 class PerguntaAuditoria(models.Model):
+    NIVEIS_RISCO = [
+        ('Crítico', 'Crítico'),
+        ('Alto', 'Alto'),
+        ('Médio', 'Médio'),
+        ('Baixo', 'Baixo'),
+    ]
+
     controlo = models.ForeignKey(Questao, related_name='perguntas_praticas', on_delete=models.CASCADE)
-    texto_pergunta = models.CharField(max_length=255, help_text="A pergunta de Sim/Não. Ex: O disco está encriptado?")
+    texto_pergunta = models.CharField(max_length=255)
+    
+    
+    nivel_risco_sugerido = models.CharField(
+        max_length=10, 
+        choices=NIVEIS_RISCO, 
+        default='Médio',
+        help_text="Se o auditor responder NÃO, qual é a gravidade deste risco?"
+    )
 
     class Meta:
         verbose_name = "Pergunta Prática"
         verbose_name_plural = "Perguntas Práticas"
 
     def __str__(self):
-        return f"{self.controlo.referencia_controlo} -> {self.texto_pergunta}"
+        return f"{self.controlo.referencia_controlo} -> {self.texto_pergunta} [{self.nivel_risco_sugerido}]"
 
 class Auditoria(models.Model):
     data_inicio = models.DateField()
@@ -164,14 +179,14 @@ class ControloISO(models.Model):
         return f"{self.codigo} - {self.nome}"
 
 class RespostaClienteSoA(models.Model):
-    # Aqui guardamos o que o cliente importou do Excel
+    # Aqui guarda-se o estado de cada controlo para o SoA do cliente, com justificações e evidências
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     controlo = models.ForeignKey(ControloISO, on_delete=models.CASCADE)
     aplicavel = models.BooleanField(default=True)
     estado = models.CharField(max_length=50) # Implementado, Em Curso, Não Iniciado
     justificacao = models.TextField(blank=True, null=True)
     evidencia = models.CharField(max_length=255, blank=True, null=True)
-    ultima_atualizacao = models.DateTimeField(auto_now=True) # Atualiza a data sozinho sempre que o cliente faz novo upload!
+    ultima_atualizacao = models.DateTimeField(auto_now=True) # Atualiza a data sozinho sempre que o cliente faz novo upload
 
     class Meta:
         verbose_name = "Resposta SoA do Cliente"
@@ -203,14 +218,20 @@ class ProgressoRecurso(models.Model):
         return f"{self.utilizador.username} - {self.recurso.titulo} ({self.status})"
 
 class Risco(models.Model):
-    NIVEIS = [('Alto', 'Alto'), ('Médio', 'Médio'), ('Baixo', 'Baixo')]
+    NIVEIS = [('Crítico', 'Crítico'),
+              ('Alto', 'Alto'), 
+              ('Médio', 'Médio'), 
+              ('Baixo', 'Baixo')]
     
     titulo = models.CharField(max_length=200)
     nivel = models.CharField(max_length=10, choices=NIVEIS)
-    organizacao = models.ForeignKey(Organizacao, on_delete=models.CASCADE) # No dashboard usei 'empresa', mas aqui liga à tua 'Organizacao'
+    organizacao = models.ForeignKey(Organizacao, on_delete=models.CASCADE) 
     controlo_associado = models.ForeignKey(ControloISO, on_delete=models.SET_NULL, null=True)
     data_detecao = models.DateField(auto_now_add=True)
-
+    descricao = models.TextField(blank=True, null=True)
+    auditoria_origem = models.ForeignKey(Auditoria, on_delete=models.SET_NULL, null=True, blank=True)
+    evidencia_resolucao = models.FileField(upload_to='evidencias_acoes/', blank=True, null=True)
+    
     class Meta:
         verbose_name = "Risco"
         verbose_name_plural = "Riscos"
@@ -226,6 +247,8 @@ class AcaoCorretiva(models.Model):
     risco = models.ForeignKey(Risco, on_delete=models.CASCADE, related_name='acoes')
     status = models.CharField(max_length=20, choices=ESTADOS, default='Pendente')
     data_limite = models.DateField()
+    responsavel = models.CharField(max_length=150, default="Não atribuído")
+    
 
     class Meta:
         verbose_name = "Ação Corretiva"

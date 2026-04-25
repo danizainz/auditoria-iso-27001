@@ -36,7 +36,7 @@ function App() {
         {/* A Rota mostra o FORMULÁRIO vazio para criar */}
         <Route path="/auditorias/nova" element={<Auditoria />} />
 
-        {/* A NOVA ROTAPARA CONTINUAR , o :id é o número da auditoria */}
+        {/* A NOVA ROTA PARA CONTINUAR , o :id é o número da auditoria */}
         <Route path="/auditoria/:id" element={<Auditoria />} />
         
         <Route path="/riscos" element={<Riscos />} />

@@ -6,69 +6,70 @@ import './Dashboard.css';
 function Registo() {
   const navigate = useNavigate();
   
-  // O Estado controla em que passo estamos (1, 2 ou 3)
   const [passo, setPasso] = useState(1);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState('');
 
-  // Dados do formulário
   const [dados, setDados] = useState({
     nome: '', email: '', password: '', codigo: '', objetivo: '', empresa: ''
   });
 
-  // PASSO 1: Enviar dados e pedir código
   const handleRegisto = async (e) => {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/registar/`, {
         nome_completo: dados.nome,
         email: dados.email,
         password: dados.password
       });
-      setPasso(2); // Avança para o ecrã do código
+      setPasso(2);
     } catch (err) {
-      setErro(err.response?.data?.erro || 'Erro no registo.');
+      const mensagemErro = err.response?.data?.erro || 'Erro no registo.';
+      
+      if (err.response && err.response.status === 400) {
+        setErro(mensagemErro + " A redirecionar para o login...");
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+      } else {
+        setErro(mensagemErro);
+      }
     }
     setLoading(false);
   };
 
-  // PASSO 2: Validar Código
   const handleVerificarOTP = async (e) => {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      const res = await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
+      const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/verificar-otp/`, {
         email: dados.email,
         codigo: dados.codigo
       });
       
-      // Guarda o token e faz login silencioso!
       localStorage.setItem('token', res.data.access);
-      
-      // 🌟 GUARDA O NOME E O EMAIL PARA O PERFIL E A SIDEBAR LEREM!
       localStorage.setItem('nomeUser', dados.nome); 
       localStorage.setItem('emailUser', dados.email); 
       
-      setPasso(3); // Avança para o ecrã de Perfil
+      setPasso(3);
     } catch (err) {
       setErro(err.response?.data?.erro || 'Código incorreto.');
     }
     setLoading(false);
   };
 
-  // PASSO 3: Finalizar Perfil
   const handlePerfil = async (e) => {
     e.preventDefault();
     setLoading(true); setErro('');
     try {
-      await axios.post('https://api.auditoria-iso-27001.pt/api/registar/', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/finalizar-perfil/`, {
         objetivo: dados.objetivo,
         empresa: dados.empresa
       }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-      navigate('/auditorias'); // vai para o Dashboard
+      navigate('/auditorias');
     } catch (err) {
       setErro('Erro ao gravar perfil.');
     }
@@ -79,7 +80,6 @@ function Registo() {
     <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f3f4f6', justifyContent: 'center', alignItems: 'center' }}>
       <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', width: '400px' }}>
         
-        {/* PASSO 1: Acesso */}
         {passo === 1 && (
           <form onSubmit={handleRegisto}>
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Criar Conta</h2>
@@ -99,7 +99,6 @@ function Registo() {
           </form>
         )}
 
-        {/* PASSO 2: Verificação do Email */}
         {passo === 2 && (
           <form onSubmit={handleVerificarOTP}>
             <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Verifica o E-mail</h2>
@@ -114,7 +113,6 @@ function Registo() {
           </form>
         )}
 
-        {/* PASSO 3: O Perfil (Onboarding) */}
         {passo === 3 && (
           <form onSubmit={handlePerfil}>
             <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Bem-vindo, {dados.nome}!</h2>

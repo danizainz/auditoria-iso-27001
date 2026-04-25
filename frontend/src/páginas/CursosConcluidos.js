@@ -15,7 +15,7 @@ function CursosConcluidos({ isEmbedded = false }) {
     const carregarDados = async () => {
       try {
         const token = localStorage.getItem('token') || localStorage.getItem('access');
-        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/user-profile/', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/user-profile/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

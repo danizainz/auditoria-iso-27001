@@ -16,7 +16,7 @@ function Biblioteca() {
     const buscarRecursos = async () => {
       try {
         const token = localStorage.getItem('token') || localStorage.getItem('access');
-        const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/recursos-educativos/', {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/recursos-educativos/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -40,7 +40,7 @@ function Biblioteca() {
     const tituloValido = r.titulo ? r.titulo.toLowerCase() : "";
     const batePesquisa = tituloValido.includes(busca.toLowerCase());
     
-    // Filtro dos Botões (Pills)
+    // Filtro dos Botões 
     let bateCategoria = false;
     if (categoriaAtiva === "Todos") bateCategoria = true;
     if (categoriaAtiva === "Templates" && r.tipo === "Template") bateCategoria = true;
@@ -49,13 +49,13 @@ function Biblioteca() {
     return batePesquisa && bateCategoria;
   });
 
-  // FUNÇÃO ORIGINAL, AGORA COM O "GATILHO" PARA A BD INCORPORADO
+  
   const irParaCurso = async (recurso) => {
     
     // para Django: Gravar como "Em andamento"
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-progresso/', 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/atualizar-progresso/`, 
         { recurso_id: recurso.id, status: 'Em andamento' },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -63,8 +63,8 @@ function Biblioteca() {
       console.error("Erro a gravar início na BD:", error);
     }
 
-    // 2. A TUA NAVEGAÇÃO ORIGINAL INTACTA
-    let idDoJson = "top_vulnerabilidades"; // Valor padrão (fallback)
+    
+    let idDoJson = "top_vulnerabilidades"; 
 
     // O React olha para o título que vem do Django e escolhe o ID certo
     if (recurso.titulo.includes("Phishing")) {

@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from . import views
 
 from .views import (
     OrganizacaoViewSet, QuestaoViewSet, AuditoriaViewSet,
@@ -9,7 +10,8 @@ from .views import (
     listar_auditorias_dashboard, dashboard_real , verificar_otp, finalizar_perfil,
     importar_soa_excel, estatisticas_soa, concluir_curso, dados_perfil, atualizar_seguranca,
     gerar_qr_code_2fa, confirmar_ativacao_2fa, login_step_1, login_step_2_verify,
-    alterar_password_2fa, solicitar_alteracao_email, confirmar_novo_email, atualizar_progresso
+    alterar_password_2fa, solicitar_alteracao_email, confirmar_novo_email, atualizar_progresso,
+    listar_riscos_pagina, tratar_risco, concluir_risco, gerar_dados_relatorio_pdf,
 
 )
 from .views import atualizar_progresso
@@ -62,4 +64,15 @@ urlpatterns = [
     path('confirmar-novo-email/', confirmar_novo_email, name='confirmar-email'),
     path('alterar-password-2fa/', alterar_password_2fa, name='alterar-pass-2fa'),
     path('atualizar-progresso/', atualizar_progresso, name='atualizar-progresso'),
+
+
+    path('riscos-lista/', views.listar_riscos_pagina, name='riscos_lista'),
+    path('riscos/<int:risco_id>/tratar/', views.tratar_risco, name='tratar_risco'),
+    path('riscos/<int:risco_id>/concluir/', views.concluir_risco, name='concluir_risco'),
+
+
+    # 9. ROTA PARA GERAR O PDF DOS DADOS DA AUDITORIA
+    path('auditoria/<int:auditoria_id>/pdf-dados/', views.gerar_dados_relatorio_pdf, name='gerar_dados_pdf'),
+
+
 ]

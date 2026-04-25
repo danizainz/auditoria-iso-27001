@@ -58,9 +58,9 @@
   font-weight: 600;
 }
 
-/* --- A MAGIA PARA O FUNDO --- */
+
 .sidebar-bottom {
-  margin-top: auto; /* Isto empurra esta secção toda para o fundo da barra! */
+  margin-top: auto; /* Isto empurra esta secção toda para o fundo da barra*/
   padding: 20px;
   border-top: 1px solid #f3f4f6;
   display: flex;

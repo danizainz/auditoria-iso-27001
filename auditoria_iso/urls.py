@@ -12,7 +12,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls), # ADMIN NORMAL DO DJANGO
     
-    # ROTA DE LOGIN (USA A NOSSA VISTA CUSTOMIZADA DE EMAIL)
+    # ROTA DE LOGIN 
     path('api/token/', LoginComEmailView.as_view(), name='token_obtain_pair'),
     
     # Rota para renovar o token (refresh)

@@ -89,8 +89,8 @@ function CursoPlayer() {
         const token = localStorage.getItem('token') || localStorage.getItem('access');
         
         
-        // O ID que o React usa para escolher o curso (ex: "curso_phishing") é o mesmo que o Django espera para gravar na BD!
-        await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-progresso/', 
+        // O ID que o React usa para escolher o curso (ex: "curso_phishing") é o mesmo que o Django espera para gravar na BD
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/atualizar-progresso/`, 
           { 
             recurso_id: cursoData.id_bd, 
             status: 'Concluído' 

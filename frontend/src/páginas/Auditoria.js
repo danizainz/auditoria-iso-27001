@@ -36,13 +36,13 @@ function Auditoria() {
         const headers = { Authorization: `Bearer ${token}` };
 
         const pedidos = [
-          axios.get('https://auditoria-iso-27001.onrender.com/api/questoes/', { headers }),
-          axios.get('https://auditoria-iso-27001.onrender.com/api/organizacoes/', { headers })
+          axios.get(`${process.env.REACT_APP_API_URL}/api/questoes/`, { headers }),
+          axios.get(`${process.env.REACT_APP_API_URL}/api/organizacoes/`, { headers })
         ];
 
         if (id) {
-          pedidos.push(axios.get(`https://auditoria-iso-27001.onrender.com/api/auditorias/${id}/`, { headers }));
-          pedidos.push(axios.get('https://auditoria-iso-27001.onrender.com/api/respostas/', { headers }));
+          pedidos.push(axios.get(`${process.env.REACT_APP_API_URL}/api/auditorias/${id}/`, { headers }));
+          pedidos.push(axios.get(`${process.env.REACT_APP_API_URL}/api/respostas/`, { headers }));
         }
 
         const resultados = await Promise.all(pedidos);
@@ -219,7 +219,7 @@ function Auditoria() {
         if (empresaExistente) {
           orgIdFinal = empresaExistente.id;
         } else {
-          const resNovaOrg = await axios.post('https://auditoria-iso-27001.onrender.com/api/organizacoes/', {
+          const resNovaOrg = await axios.post(`${process.env.REACT_APP_API_URL}/api/organizacoes/`, {
             nome: info.nomeOrganizacao.trim(),
             setor: 'Não Definido'
           }, { headers: headersJSON });
@@ -232,16 +232,17 @@ function Auditoria() {
           estado: 1,
           assinatura_base64: info.assinaturaData 
         };
-        const responseAuditoria = await axios.post('https://auditoria-iso-27001.onrender.com/api/auditorias/', payloadAuditoria, { headers: headersJSON });
+        const responseAuditoria = await axios.post(`${process.env.REACT_APP_API_URL}/api/auditorias/`, payloadAuditoria, { headers: headersJSON });
         auditoriaId = responseAuditoria.data.id; 
       } else {
-        const apagadores = respostasAntigas.map(r => 
-          axios.delete(`https://auditoria-iso-27001.onrender.com/api/respostas/${r.id}/`, { headers: headersJSON })
-        );
-        await Promise.all(apagadores);
+        // 🚦 APAGAR EM FILA INDIANA (EVITAR ERRO DE LIGAÇÕES)
+        for (const r of respostasAntigas) {
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/respostas/${r.id}/`, { headers: headersJSON });
+        }
       }
 
-      const promessasRespostas = [];
+      // Prepara todas as respostas que queremos enviar
+      const respostasParaEnviar = [];
       seccoes.forEach(sec => {
         sec.controlos.forEach(ctrl => {
           ctrl.sub_perguntas.forEach(sp => {
@@ -250,24 +251,27 @@ function Auditoria() {
               formData.append('auditoria', auditoriaId);
               formData.append('pergunta', sp.id_pergunta);
               formData.append('resposta', sp.resposta);
-              formData.append('observacoes', sp.nota || ""); // 🌟 ADICIONADO: Envia a nota para a BD
+              formData.append('observacoes', sp.nota || ""); 
               if (sp.evidencia) formData.append('evidencia', sp.evidencia);
 
-              promessasRespostas.push(
-                axios.post('https://auditoria-iso-27001.onrender.com/api/respostas/', formData, { headers: headersFicheiros })
-              );
+              respostasParaEnviar.push(formData);
             }
           });
         });
       });
 
-      await Promise.all(promessasRespostas);
-      alert(`✅ SUCESSO! A Auditoria foi guardada!`);
+      // 🚦 GRAVAR EM FILA INDIANA (O SEGREDO PARA NÃO REBENTAR A BD)
+      // Em vez de Promise.all, usamos um for...of para esperar que um grave antes de mandar o próximo.
+      for (const formData of respostasParaEnviar) {
+          await axios.post(`${process.env.REACT_APP_API_URL}/api/respostas/`, formData, { headers: headersFicheiros });
+      }
+
+      alert(`✅ SUCESSO! A Auditoria e as Ações Corretivas (se existirem) foram guardadas!`);
       navigate('/auditorias'); 
 
     } catch (error) {
       console.error("Erro fatal ao submeter auditoria:", error);
-      alert("❌ Ocorreu um erro ao guardar.");
+      alert("❌ Ocorreu um erro ao guardar. A Base de Dados pode estar sobrecarregada.");
     }
   };
 

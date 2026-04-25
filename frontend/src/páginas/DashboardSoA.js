@@ -22,7 +22,7 @@ function DashboardSoA() {
   const carregarDadosReais = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      const res = await axios.get('https://auditoria-iso-27001.onrender.com/api/estatisticas-soa/', {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/estatisticas-soa/`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -55,7 +55,7 @@ function DashboardSoA() {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
       
       // 1. Envia para o servidor
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/importar-soa/', formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/importar-soa/`, formData, {
         headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}` }
       });
 

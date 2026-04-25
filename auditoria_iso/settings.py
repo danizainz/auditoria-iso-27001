@@ -1,9 +1,12 @@
 from pathlib import Path
 from datetime import timedelta 
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-81ke!z)-d%pi4lldm@ft-l46ilip@+2u8w#33!%_%(p!b@0h4)'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 
 DEBUG = True
@@ -64,28 +67,17 @@ WSGI_APPLICATION = 'auditoria_iso.wsgi.application'
 
 DATABASES = {
     'default': {
-
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bbqnkmnkevlurxgomgts',
-        'USER': 'ugczsqulplqpeqke',
-        'PASSWORD': 'bQEi7mPlde1JtieF1kRT', 
-        'HOST': 'bbqnkmnkevlurxgomgts-mysql.services.clever-cloud.com',
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
 
-#Database - Configuração para base de dados local (MySQL)
-#DATABASES = {
-    #'default': {
-        #'ENGINE': 'django.db.backends.mysql',
-        #'NAME': 'db_auditoria_iso', 
-        #'USER': 'root',                             
-        #'PASSWORD': 'Snolinhaa123',                            
-        #'HOST': '127.0.0.1',
-        #'PORT': '3306',
-    #}
-#}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -136,10 +128,14 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7), # O de renovação dura 1 semana
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'dani.carvalho2928@gmail.com' 
-EMAIL_HOST_PASSWORD = 'kuinocbqvhufrxls'
+
+
+# --- CONFIGURAÇÃO DE EMAIL (Já configurada para .env) ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

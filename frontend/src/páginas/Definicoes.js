@@ -32,7 +32,7 @@ function Definicoes() {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      const response = await axios.get('https://auditoria-iso-27001.onrender.com/api/user-profile/', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/user-profile/`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUserData(response.data);
@@ -48,7 +48,7 @@ function Definicoes() {
     if (novoEmail === userData.email) return setModoEdicaoDetalhes(false);
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/solicitar-alteracao-email/', { novo_email: novoEmail }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/solicitar-alteracao-email/`, { novo_email: novoEmail }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowModalEmail(true);
@@ -58,7 +58,7 @@ function Definicoes() {
   const confirmarEmailFinal = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/confirmar-novo-email/', { 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/confirmar-novo-email/`, { 
         codigo: codigoEmail, novo_email: novoEmail 
       }, { headers: { Authorization: `Bearer ${token}` } });
       alert("Email atualizado com sucesso!");
@@ -72,7 +72,7 @@ function Definicoes() {
   const manejarAlterarPassword = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/alterar-password-2fa/', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/alterar-password-2fa/`, {
         password_atual: passwordAtual, nova_password: novaPassword, codigo_otp: codigo2FAPassword
       }, { headers: { Authorization: `Bearer ${token}` } });
       alert("Password alterada!");
@@ -84,7 +84,7 @@ function Definicoes() {
   const iniciarAtivacao2FA = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      const resp = await axios.get('https://auditoria-iso-27001.onrender.com/api/gerar-qr-2fa/', {
+      const resp = await axios.get(`${process.env.REACT_APP_API_URL}/api/gerar-qr-2fa/`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQrCodeUrl(resp.data.qr_code);
@@ -95,7 +95,7 @@ function Definicoes() {
   const confirmarAtivacao2FA = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/confirmar-2fa/', { codigo: codigoAtivacao }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/confirmar-2fa/`, { codigo: codigoAtivacao }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIs2FA(true); setShowModal2FA(false); fetchUserData();
@@ -105,7 +105,7 @@ function Definicoes() {
   const guardarSeguranca = async () => {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/atualizar-seguranca/', { telemovel, dois_fatores_ativo: is2FA }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/atualizar-seguranca/`, { telemovel, dois_fatores_ativo: is2FA }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("Segurança guardada!"); setModoEdicaoSeguranca(false);

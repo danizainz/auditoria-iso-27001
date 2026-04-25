@@ -17,7 +17,7 @@ function Loginn() {
 
     try {
       // Bate na porta do Passo 1
-      const response = await axios.post('https://auditoria-iso-27001.onrender.com/api/login-step-1/', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/login-step-1/`, {
         email: email.trim(),
         password: password
       });
@@ -37,7 +37,7 @@ function Loginn() {
     setErro('');
 
     try {
-      const response = await axios.post('https://auditoria-iso-27001.onrender.com/api/login-step-2-verify/', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/login-step-2-verify/`, {
         email: email.trim(),
         codigo: codigo2FA.trim()
       });

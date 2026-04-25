@@ -26,7 +26,7 @@ function RedefinirPassword() {
 
     try {
       // 2. Enviar a nova password e o Token (a chave do e-mail) de volta para o Django
-      await axios.post('https://auditoria-iso-27001.onrender.com/api/password_reset/confirm/', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/password_reset/confirm/`, {
         token: token,
         password: password
       });

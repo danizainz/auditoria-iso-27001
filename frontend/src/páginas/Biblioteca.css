@@ -256,5 +256,5 @@ button.bib-btn-abrir:disabled {
 }
 
 .bib-filtros {
-    margin-bottom: 0; /* Removido o margin bottom antigo pois agora está no flexbox */
+    margin-bottom: 0; 
 }

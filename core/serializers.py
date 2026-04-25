@@ -29,12 +29,11 @@ class AuditoriaEstadoSerializer(serializers.ModelSerializer):
 class PerguntaAuditoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PerguntaAuditoria
-        fields = ['id', 'texto_pergunta'] # Enviamos só o ID e o texto para o React
+        fields = ['id', 'texto_pergunta'] # Envia só o ID e o texto para o React
 
 # Questão (Controlos ISO)
 class QuestaoSerializer(serializers.ModelSerializer):
     
-    # 'perguntas_praticas' é o nome exato que pusemos no related_name do models.py
     perguntas_praticas = PerguntaAuditoriaSerializer(many=True, read_only=True)
 
     class Meta:
