@@ -31,9 +31,6 @@ import os
 import io
 import base64
 import json
-import matplotlib
-matplotlib.use('Agg') # Para não precisar de um display gráfico
-import matplotlib.pyplot as plt
 from google import genai
 import openai 
 from openai import OpenAI
@@ -451,7 +448,6 @@ def dashboard_real(request):
         return Response({"erro": str(e)}, status=500)
 
 
-import pandas as pd
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -461,6 +457,7 @@ from .models import ControloISO, RespostaClienteSoA
 @permission_classes([IsAuthenticated])
 def importar_soa_excel(request):
     # 1. Verificar se o ficheiro veio no pedido
+    import pandas as pd
     if 'file' not in request.FILES:
         return Response({"erro": "Nenhum ficheiro recebido."}, status=400)
 
@@ -1024,6 +1021,12 @@ def detetar_e_criar_risco(sender, instance, created, **kwargs):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def gerar_dados_relatorio_pdf(request, auditoria_id):
+
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+
+
     try:
         aud = Auditoria.objects.get(id=auditoria_id, utilizador=request.user)
         respostas_qs = Resposta.objects.filter(auditoria=aud)
