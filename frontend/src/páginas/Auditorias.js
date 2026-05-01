@@ -40,7 +40,7 @@ function Auditorias() {
     try {
       const token = localStorage.getItem('token') || localStorage.getItem('access');
       
-      await axios.delete(`https://auditoria-iso-27001.onrender.com/api/auditorias/${id}/`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/auditorias/${id}/`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -69,7 +69,7 @@ const tratarCliqueGerarPDF = async (auditoria) => {
     const token = localStorage.getItem('token');
     console.log("🎫 O meu token é:", token);
     
-    const response = await axios.get(`http://127.0.0.1:8000/api/auditoria/${auditoria.id}/pdf-dados/`, {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/auditoria/${auditoria.id}/pdf-dados/`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
