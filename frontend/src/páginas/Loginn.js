@@ -56,7 +56,7 @@ function Loginn() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2 className="login-title">🛡️ Auditoria ISO</h2>
+        <h2 className="login-title">Auditoria ISO 27001</h2>
         <p className="login-subtitle">
           {aguardando2FA ? "Segurança em Duas Etapas" : "Introduza as suas credenciais"}
         </p>
