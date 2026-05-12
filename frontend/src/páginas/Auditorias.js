@@ -298,22 +298,29 @@ currentY += alturaCaixa + 10;
   doc.text("Detalhes Completos da Avaliação", margin, 20);
 
   if (auditoria.detalhes && auditoria.detalhes.length > 0) {
+    // 1. Mapeamento com as Novas Colunas
     const detalhesBody = auditoria.detalhes.map(d => [
       d.texto_pergunta, 
       d.evidencia_url ? 'Ver Anexo' : '-', 
-      d.resposta.toUpperCase() 
+      d.resposta ? d.resposta.toUpperCase() : '-',
+      d.notas || '-',              // NOVA COLUNA NO FIM
+      d.acao_corretiva || '-'      // NOVA COLUNA NO FIM
     ]);
 
     autoTable(doc, {
       startY: 25,
-      head: [['Controlo Avaliado', 'Evidência', 'Resultado']],
+      // 2. Cabeçalho Atualizado
+      head: [['Controlo Avaliado', 'Evidência', 'Resultado', 'Notas da Auditoria', 'Plano de Ação']],
       body: detalhesBody,
       theme: 'grid', 
-      styles: { fontSize: 9, cellPadding: 4, valign: 'middle', lineColor: [229, 231, 235], lineWidth: 0.1 },
+      // 3. Fonte a 8 para as 5 colunas caberem sem estragar o design
+      styles: { fontSize: 8, cellPadding: 4, valign: 'middle', lineColor: [229, 231, 235], lineWidth: 0.1 },
       columnStyles: {
-        0: { cellWidth: 'auto', textColor: [17, 24, 39], fontStyle: 'bold' }, 
-        1: { cellWidth: 25, halign: 'center', textColor: [37, 99, 235] }, 
-        2: { cellWidth: 25, halign: 'right' } 
+        0: { cellWidth: 55, textColor: [17, 24, 39], fontStyle: 'bold' }, // Controlo
+        1: { cellWidth: 17, halign: 'center', textColor: [37, 99, 235] }, // Evidência
+        2: { cellWidth: 20, halign: 'center' },                           // Resultado (Índice 2 INTACTO!)
+        3: { cellWidth: 45 },                                             // Notas
+        4: { cellWidth: 45 }                                              // Plano de Ação
       },
       didDrawCell: function (data) {
         if (data.column.index === 1 && data.cell.section === 'body') {
@@ -324,6 +331,7 @@ currentY += alturaCaixa + 10;
         }
       },
       didParseCell: function (data) {
+        // COMO METEMOS AS COLUNAS NO FIM, ESTA LÓGICA NÃO SE ESTRAGA!
         if (data.column.index === 2 && data.cell.section === 'body') { 
           const resp = data.cell.raw;
           data.cell.styles.fontStyle = 'bold';
@@ -337,6 +345,7 @@ currentY += alturaCaixa + 10;
       }
     });
   }
+      
 
   // --- ASSINATURA ---
   const posYAssinatura = doc.lastAutoTable.finalY + 15; 
@@ -359,7 +368,7 @@ currentY += alturaCaixa + 10;
     doc.text(`Relatório Auditoria ISO 27001 | Página ${i} de ${pageCount}`, pageWidth / 2, footerY, { align: 'center' });
   }
 
-  doc.save(`Relatorio_IA_${auditoria.n_doc}_${auditoria.nome_empresa}.pdf`);
+  doc.save(`Relatorio_${auditoria.n_doc}_${auditoria.nome_empresa}.pdf`);
 };
 
   return (
@@ -369,7 +378,6 @@ currentY += alturaCaixa + 10;
         <div className="list-topbar">
           <div className="tabs-container">
             <button className={`tab-btn ${tabAtivo === 'Auditorias' ? 'active' : ''}`} onClick={() => setTabAtivo('Auditorias')}>Ativas</button>
-            <button className={`tab-btn ${tabAtivo === 'Arquivo' ? 'active' : ''}`} onClick={() => setTabAtivo('Arquivo')}>Arquivo Histórico</button>
           </div>
           <button className="feedback-btn">💬 Suporte SGSI</button>
         </div>
@@ -526,12 +534,8 @@ currentY += alturaCaixa + 10;
             }}></div>
 
             <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-              A gerar Relatório Inteligente...
+              A gerar Relatório...
             </h2>
-            <p style={{ fontSize: '16px', color: '#d1d5db' }}>
-              A IA está a analisar as tuas respostas. Isto pode demorar uns segundos.
-            </p>
-
             <style>
               {`
                 @keyframes spin {

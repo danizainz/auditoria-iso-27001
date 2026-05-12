@@ -143,13 +143,40 @@ def listar_auditorias_dashboard(request):
                     if resp.evidencia:
                         link_foto = request.build_absolute_uri(resp.evidencia.url)
 
+                    lista_detalhes = []
+            for resp in respostas_qs:
+                if resp.pergunta: 
+                    link_foto = ""
+                    if resp.evidencia:
+                        link_foto = request.build_absolute_uri(resp.evidencia.url)
+
+                    # --- NOVO: BUSCAR NOTAS E AÇÕES CORRETIVAS ---
+                    nota_texto = resp.observacoes if resp.observacoes else "-"
+                    acao_texto = "-"
+
+                    # Se a resposta foi NÃO, vamos procurar se existe um Risco e um Plano de Ação
+                    if resp.resposta and resp.resposta.upper() == 'NÃO':
+                        from .models import Risco # Só por precaução
+                        risco = Risco.objects.filter(
+                            auditoria_origem=aud,
+                            titulo__startswith=resp.pergunta.texto_pergunta[:100]
+                        ).first()
+                        
+                        if risco:
+                            acao = risco.acoes.first()
+                            if acao and acao.descricao:
+                                acao_texto = acao.descricao
+                    # ---------------------------------------------
+
                     lista_detalhes.append({
                         "texto_pergunta": resp.pergunta.texto_pergunta,
                         "resposta": resp.resposta,
                         "evidencia_url": link_foto,
                         "referencia_controlo": resp.pergunta.controlo.referencia_controlo if resp.pergunta and resp.pergunta.controlo else "N/A",
                         "dominio_iso": resp.pergunta.controlo.dominio_iso if resp.pergunta and resp.pergunta.controlo else "Geral",
-                        "nivel_risco": resp.pergunta.nivel_risco_sugerido if resp.pergunta else "Alto"
+                        "nivel_risco": resp.pergunta.nivel_risco_sugerido if resp.pergunta else "Alto",
+                        "notas": nota_texto,               # NOVO
+                        "acao_corretiva": acao_texto       # NOVO
                     })
 
             dados_tabela.append({

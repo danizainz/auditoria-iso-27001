@@ -20,6 +20,12 @@ function Auditoria() {
   
   const [organizacoes, setOrganizacoes] = useState([]);
 
+  // --- STATES DO MODAL DE AÇÃO CORRETIVA ---
+  const [modalAcaoAberto, setModalAcaoAberto] = useState(false);
+  const [perguntaAcaoAtiva, setPerguntaAcaoAtiva] = useState(null);
+  const [planoAcaoLocal, setPlanoAcaoLocal] = useState({ responsavel: '', prazo: '', descricao: '' });
+  // -----------------------------------------
+
   const [info, setInfo] = useState({
     numDoc: "AUD-AUTO", 
     nomeOrganizacao: "", 
@@ -65,9 +71,10 @@ function Auditoria() {
                 id_pergunta: p.id,
                 texto: p.texto_pergunta,
                 resposta: null, 
-                nota: "", // Estado inicial da nota
+                nota: "", 
                 evidencia: null,
-                evidencia_url: null
+                evidencia_url: null,
+                plano_acao: null // <- Novo campo preparatório
               })) : []
             });
           }
@@ -99,7 +106,7 @@ function Auditoria() {
                 const respostaDada = respostasDestaAuditoria.find(r => r.pergunta === sp.id_pergunta);
                 if (respostaDada) {
                   sp.resposta = respostaDada.resposta; 
-                  sp.nota = respostaDada.observacoes; //  Carrega a nota antiga da BD
+                  sp.nota = respostaDada.observacoes; 
                   sp.evidencia_url = respostaDada.evidencia; 
                 }
               });
@@ -178,7 +185,6 @@ function Auditoria() {
     setSeccoes(novasSeccoes);
   };
 
-  // handle para as notas
   const handleNota = (temaId, controloId, perguntaId, texto) => {
     const novasSeccoes = seccoes.map(sec => {
       if (sec.id === temaId) {
@@ -200,6 +206,33 @@ function Auditoria() {
       return sec;
     });
     setSeccoes(novasSeccoes);
+  };
+
+  // --- FUNÇÃO PARA GUARDAR O PLANO DE AÇÃO LOCALMENTE NO STATE ---
+  const guardarPlanoLocal = (e) => {
+    e.preventDefault();
+    const { temaId, controloId, perguntaId } = perguntaAcaoAtiva;
+    const novasSeccoes = seccoes.map(sec => {
+      if (sec.id === temaId) {
+        return {
+          ...sec,
+          controlos: sec.controlos.map(ctrl => {
+            if (ctrl.id_bd === controloId) {
+              return {
+                ...ctrl,
+                sub_perguntas: ctrl.sub_perguntas.map(sp => 
+                  sp.id_pergunta === perguntaId ? { ...sp, plano_acao: planoAcaoLocal } : sp
+                )
+              };
+            }
+            return ctrl;
+          })
+        };
+      }
+      return sec;
+    });
+    setSeccoes(novasSeccoes);
+    setModalAcaoAberto(false);
   };
 
   const finalizarAuditoria = async () => {
@@ -235,13 +268,11 @@ function Auditoria() {
         const responseAuditoria = await axios.post(`${process.env.REACT_APP_API_URL}/api/auditorias/`, payloadAuditoria, { headers: headersJSON });
         auditoriaId = responseAuditoria.data.id; 
       } else {
-        // 🚦 APAGAR EM FILA INDIANA (EVITAR ERRO DE LIGAÇÕES)
         for (const r of respostasAntigas) {
             await axios.delete(`${process.env.REACT_APP_API_URL}/api/respostas/${r.id}/`, { headers: headersJSON });
         }
       }
 
-      // Prepara todas as respostas que queremos enviar
       const respostasParaEnviar = [];
       seccoes.forEach(sec => {
         sec.controlos.forEach(ctrl => {
@@ -253,6 +284,13 @@ function Auditoria() {
               formData.append('resposta', sp.resposta);
               formData.append('observacoes', sp.nota || ""); 
               if (sp.evidencia) formData.append('evidencia', sp.evidencia);
+              
+              // --- ADICIONA OS DADOS DO PLANO DE AÇÃO SE EXISTIREM ---
+              if (sp.plano_acao) {
+                formData.append('plano_responsavel', sp.plano_acao.responsavel || "");
+                formData.append('plano_prazo', sp.plano_acao.prazo || "");
+                formData.append('plano_descricao', sp.plano_acao.descricao || "");
+              }
 
               respostasParaEnviar.push(formData);
             }
@@ -260,13 +298,11 @@ function Auditoria() {
         });
       });
 
-      // 🚦 GRAVAR EM FILA INDIANA (O SEGREDO PARA NÃO REBENTAR A BD)
-      // Em vez de Promise.all, usamos um for...of para esperar que um grave antes de mandar o próximo.
       for (const formData of respostasParaEnviar) {
           await axios.post(`${process.env.REACT_APP_API_URL}/api/respostas/`, formData, { headers: headersFicheiros });
       }
 
-      alert(`✅ SUCESSO! A Auditoria e as Ações Corretivas (se existirem) foram guardadas!`);
+      alert(`✅ SUCESSO! A Auditoria e as Ações Corretivas foram guardadas!`);
       navigate('/auditorias'); 
 
     } catch (error) {
@@ -287,7 +323,6 @@ function Auditoria() {
           <div style={{ textAlign: 'center', padding: '50px' }}>A carregar sistema... 🔄</div>
         ) : (
           <>
-            {/* PÁGINA 1 */}
             {paginaAtual === 1 && (
               <div className="audit-form-container">
                 <div className="input-card">
@@ -333,7 +368,6 @@ function Auditoria() {
               </div>
             )}
 
-            {/* O */}
             {paginaAtual === 2 && (
               <div className="audit-form-container">
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '30px', overflowX: 'auto', paddingBottom: '10px' }}>
@@ -370,60 +404,51 @@ function Auditoria() {
                             {ctrl.sub_perguntas.map((sp, index) => (
                               <div key={sp.id_pergunta} style={{ borderBottom: index !== ctrl.sub_perguntas.length - 1 ? '1px solid #f3f4f6' : 'none', paddingBottom: '25px', marginBottom: '25px' }}>
   
-  {/* TEXTO DA PERGUNTA */}
   <p style={{ fontWeight: '500', fontSize: '16px', color: '#111827', marginTop: 0 }}>{sp.texto}</p>
   
-  {/* BOTÕES DE RESPOSTA (Sim / Não / NA) */}
   <div className="sc-btn-group" style={{ display: 'flex', gap: '10px', marginTop: '15px', marginBottom: '15px' }}>
     <button className={`sc-btn sc-sim ${sp.resposta === 'Sim' ? 'active' : ''}`} onClick={() => handleResposta(sec.id, ctrl.id_bd, sp.id_pergunta, 'Sim')}>Sim</button>
     <button className={`sc-btn sc-nao ${sp.resposta === 'Não' ? 'active' : ''}`} onClick={() => handleResposta(sec.id, ctrl.id_bd, sp.id_pergunta, 'Não')}>Não</button>
     <button className={`sc-btn sc-na ${sp.resposta === 'NA' ? 'active' : ''}`} onClick={() => handleResposta(sec.id, ctrl.id_bd, sp.id_pergunta, 'NA')}>NA</button>
   </div>
 
-  {/* ÁREA DA NOTA*/}
   <div style={{ marginBottom: '10px' }}>
     <textarea 
       placeholder="Adicione uma nota, justificação ou observação de auditoria..."
       value={sp.nota || ''}
       onChange={(e) => handleNota(sec.id, ctrl.id_bd, sp.id_pergunta, e.target.value)}
       style={{ 
-        width: '100%', 
-        padding: '12px', 
-        borderRadius: '6px', 
-        border: '1px solid #d1d5db', 
-        fontSize: '14px', 
-        boxSizing: 'border-box', 
-        minHeight: '80px', 
-        fontFamily: 'inherit',
-        resize: 'vertical',
-        backgroundColor: '#ffffff'
+        width: '100%', padding: '12px', borderRadius: '6px', border: '1px solid #d1d5db', 
+        fontSize: '14px', boxSizing: 'border-box', minHeight: '80px', fontFamily: 'inherit',
+        resize: 'vertical', backgroundColor: '#ffffff'
       }}
     />
   </div>
 
-  {/* BARRA DE FERRAMENTAS (Anexo à esquerda, Ação à direita) */}
   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: sp.resposta === 'Não' ? '#fef2f2' : '#f9fafb', padding: '12px 15px', borderRadius: '6px', border: `1px dashed ${sp.resposta === 'Não' ? '#fca5a5' : '#d1d5db'}`, transition: 'all 0.3s' }}>
     
-    {/* Lado Esquerdo: Ficheiro */}
     <div>
       <label style={{ fontSize: '13px', color: '#4f46e5', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
         📎 {sp.evidencia ? <span style={{ color: '#10b981' }}>Ficheiro: {sp.evidencia.name || 'Anexo Guardado'}</span> : 'Anexar Evidência'}
         <input 
-          type="file" 
-          accept="image/*,.pdf" 
+          type="file" accept="image/*,.pdf" 
           onChange={(e) => handleEvidencia(sec.id, ctrl.id_bd, sp.id_pergunta, e.target.files[0])} 
           style={{ display: 'none' }}
         />
       </label>
     </div>
 
-    {/* Lado Direito: Botão Ação Corretiva (Só aparece se a resposta for NÃO) */}
+    {/* BOTÃO ATUALIZADO PARA ABRIR O MODAL E MUDAR DE COR SE JÁ TIVER AÇÃO */}
     {sp.resposta === 'Não' && (
       <button 
-        onClick={() => alert(`Aqui abriremos o Modal para criar o Plano de Ação para: \n"${sp.texto}"`)}
-        style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 2px 4px rgba(239, 68, 68, 0.2)' }}
+        onClick={() => {
+          setPerguntaAcaoAtiva({ temaId: sec.id, controloId: ctrl.id_bd, perguntaId: sp.id_pergunta, texto: sp.texto });
+          setPlanoAcaoLocal(sp.plano_acao || { responsavel: '', prazo: '', descricao: '' });
+          setModalAcaoAberto(true);
+        }}
+        style={{ backgroundColor: sp.plano_acao ? '#f59e0b' : '#ef4444', color: 'white', border: 'none', padding: '8px 16px', borderRadius: '6px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', boxShadow: sp.plano_acao ? '0 2px 4px rgba(245, 158, 11, 0.2)' : '0 2px 4px rgba(239, 68, 68, 0.2)' }}
       >
-        🚀 Criar Ação Corretiva
+        {sp.plano_acao ? '✏️ Editar Ação Corretiva' : '🚀 Criar Ação Corretiva'}
       </button>
     )}
   </div>
@@ -448,6 +473,45 @@ function Auditoria() {
             )}
           </>
         )}
+        
+        {/* --- O TEU MODAL LÁ NO FUNDO A SOBREPOR TUDO --- */}
+        {modalAcaoAberto && perguntaAcaoAtiva && (
+          <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(17, 24, 39, 0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000, backdropFilter: 'blur(4px)' }}>
+            <div style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '550px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2 style={{ margin: 0, fontSize: '20px', color: '#111827', fontWeight: '800' }}>Plano de Ação Imediato</h2>
+                <button onClick={() => setModalAcaoAberto(false)} style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#9ca3af' }}>✖</button>
+              </div>
+              
+              <div style={{ backgroundColor: '#fef2f2', padding: '12px', borderRadius: '8px', marginBottom: '20px', borderLeft: '4px solid #ef4444' }}>
+                <p style={{ margin: 0, fontSize: '13px', color: '#991b1b', fontWeight: 'bold' }}>Falha Detetada:</p>
+                <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#7f1d1d' }}>{perguntaAcaoAtiva.texto}</p>
+              </div>
+
+              <form onSubmit={guardarPlanoLocal}>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '20px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: '#374151' }}>Responsável (Opcional)</label>
+                    <input type="text" value={planoAcaoLocal.responsavel} onChange={(e) => setPlanoAcaoLocal({...planoAcaoLocal, responsavel: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #d1d5db'}} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: '#374151' }}>Prazo (Opcional)</label>
+                    <input type="date" value={planoAcaoLocal.prazo} onChange={(e) => setPlanoAcaoLocal({...planoAcaoLocal, prazo: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #d1d5db'}} />
+                  </div>
+                </div>
+                <div style={{ marginBottom: '30px' }}>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', marginBottom: '6px', color: '#374151' }}>Solução Recomendada</label>
+                  <textarea required value={planoAcaoLocal.descricao} onChange={(e) => setPlanoAcaoLocal({...planoAcaoLocal, descricao: e.target.value})} placeholder="O que deve ser feito para corrigir isto?" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #d1d5db', minHeight: '100px'}}></textarea>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                  <button type="button" onClick={() => setModalAcaoAberto(false)} style={{ padding: '10px 20px', border: '1px solid #d1d5db', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', backgroundColor: 'white'}}>Cancelar</button>
+                  <button type="submit" style={{ padding: '10px 24px', backgroundColor: '#4f46e5', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer'}}>Aplicar à Auditoria</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
       </div>
     </Layout>
   );
