@@ -11,9 +11,9 @@ from .views import (
     importar_soa_excel, estatisticas_soa, concluir_curso, dados_perfil, atualizar_seguranca,
     gerar_qr_code_2fa, confirmar_ativacao_2fa, login_step_1, login_step_2_verify,
     alterar_password_2fa, solicitar_alteracao_email, confirmar_novo_email, atualizar_progresso,
-    listar_riscos_pagina, tratar_risco, concluir_risco, gerar_dados_relatorio_pdf,
-
+    listar_riscos_pagina, tratar_risco, concluir_risco, gerar_dados_relatorio_pdf, eliminar_conta_total,
 )
+
 from .views import atualizar_progresso
 
 # O "Router" cria automaticamente todos os links das tabelas
@@ -73,6 +73,9 @@ urlpatterns = [
 
     # 9. ROTA PARA GERAR O PDF DOS DADOS DA AUDITORIA
     path('auditoria/<int:auditoria_id>/pdf-dados/', views.gerar_dados_relatorio_pdf, name='gerar_dados_pdf'),
+    
+    # 10. ROTA PARA ELIMINAR CONTA (RGPD)
+    path('eliminar-conta/', views.eliminar_conta_total, name='eliminar-conta'),
 
 
 ]

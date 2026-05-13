@@ -25,6 +25,7 @@ from django.core.mail import send_mail
 from django.dispatch import receiver
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import EmailMultiAlternatives
+from django.utils import timezone
 import random
 
 import os
@@ -86,10 +87,58 @@ class AuditoriaViewSet(viewsets.ModelViewSet):
         return Auditoria.objects.filter(utilizador=self.request.user)
 
     def perform_create(self, serializer):
+        # Mantém a tua lógica de associar o utilizador logado
         serializer.save(utilizador=self.request.user)
+
+    # 🚨 NOVO: BLOQUEIO DE SEGURANÇA PARA FICHEIROS MALICIOSOS (.EXE, etc)
+    def create(self, request, *args, **kwargs):
+        if request.FILES:
+            extensoes_permitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']
+            
+            # Verifica cada ficheiro enviado nas respostas
+            for key in request.FILES:
+                ficheiro = request.FILES[key]
+                extensao = ficheiro.name.split('.')[-1].lower()
+                
+                if extensao not in extensoes_permitidas:
+                    return Response({
+                        'erro': f'Segurança: O ficheiro "{ficheiro.name}" não é permitido por ser um tipo de ficheiro perigoso ({extensao}).'
+                    }, status=400)
+        
+        # Se todos os ficheiros forem seguros, continua para o perform_create normal
+        return super().create(request, *args, **kwargs)
+
 class RespostaViewSet(viewsets.ModelViewSet):
     queryset = Resposta.objects.all()
     serializer_class = RespostaSerializer
+
+    # 🚨 BARREIRA DE SEGURANÇA NA CRIAÇÃO DE RESPOSTAS
+    def create(self, request, *args, **kwargs):
+        if 'evidencia' in request.FILES:
+            ficheiro = request.FILES['evidencia']
+            extensao = ficheiro.name.split('.')[-1].lower()
+            extensoes_permitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']
+            
+            if extensao not in extensoes_permitidas:
+                return Response({
+                    'erro': f'Segurança bloqueou o ficheiro "{ficheiro.name}". Extensão .{extensao} não é permitida!'
+                }, status=400)
+                
+        return super().create(request, *args, **kwargs)
+
+    # 🚨 BARREIRA DE SEGURANÇA NA ATUALIZAÇÃO (Caso edites a resposta depois)
+    def update(self, request, *args, **kwargs):
+        if 'evidencia' in request.FILES:
+            ficheiro = request.FILES['evidencia']
+            extensao = ficheiro.name.split('.')[-1].lower()
+            extensoes_permitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']
+            
+            if extensao not in extensoes_permitidas:
+                return Response({
+                    'erro': f'Segurança bloqueou o ficheiro "{ficheiro.name}". Extensão .{extensao} não é permitida!'
+                }, status=400)
+                
+        return super().update(request, *args, **kwargs)
 
 class TipoUtilizadorViewSet(viewsets.ModelViewSet):
     queryset = TipoUtilizador.objects.all()
@@ -716,8 +765,6 @@ def confirmar_ativacao_2fa(request):
     except Exception as e:
         return Response({"erro": str(e)}, status=500)
 
-
-
 @api_view(['POST'])
 @authentication_classes([]) 
 @permission_classes([AllowAny])
@@ -729,7 +776,18 @@ def login_step_1(request):
     user = authenticate(username=email, password=password)
     
     if user is not None:
-        # 2. Verifica se tem 2FA ativo
+        # 🚨 NOVO: VERIFICAÇÃO DE INATIVIDADE (RGPD / PONTO 2) 🚨
+        if user.last_login:
+            dias_inativo = (timezone.now() - user.last_login).days
+            if dias_inativo > 90:
+                user.is_active = False # Congela a conta
+                user.save()
+                return Response({
+                    "erro": "Esta conta foi congelada por inatividade (mais de 90 dias). Por favor, contacte o administrador."
+                }, status=403)
+        # ---------------------------------------------------
+
+        # 2. Verifica se tem 2FA ativo (Mantém a tua lógica original)
         perfil = getattr(user, 'perfil', None)
         is_2fa_active = perfil.dois_fatores_ativo if perfil else False
         
@@ -747,6 +805,8 @@ def login_step_1(request):
         }, status=200)
     
     return Response({"erro": "Email ou password incorretos."}, status=401)
+
+ 
 
 @api_view(['POST'])
 @authentication_classes([])
@@ -940,12 +1000,24 @@ def concluir_risco(request, risco_id):
             acao.status = 'Concluída'
             acao.save()
             
-        # 2. Guarda o ficheiro no Risco (como já fazíamos)
+        # 2. Guarda o ficheiro no Risco com VALIDAÇÃO DE SEGURANÇA
         if 'evidencia' in request.FILES:
-            risco.evidencia_resolucao = request.FILES['evidencia']
+            ficheiro = request.FILES['evidencia']
+            
+            # --- BLOQUEIO DE SEGURANÇA ---
+            extensao = ficheiro.name.split('.')[-1].lower()
+            extensoes_permitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx']
+            
+            if extensao not in extensoes_permitidas:
+                return Response({
+                    'erro': f'Ficheiro .{extensao} não é permitido. Apenas PDFs, Imagens ou documentos Word.'
+                }, status=400)
+            # ------------------------------
+
+            risco.evidencia_resolucao = ficheiro
             risco.save()
 
-        # 3. --- A ATUALIZAÇÃO DA AUDITORIA ---
+        # 3. --- A ATUALIZAÇÃO DA AUDITORIA (Mantida exatamente igual) ---
         from .models import Resposta
         resposta_origem = Resposta.objects.filter(
             auditoria=risco.auditoria_origem,
@@ -964,6 +1036,9 @@ def concluir_risco(request, risco_id):
             resposta_origem.save()
 
         return Response({'mensagem': 'Resolvido e Auditoria atualizada com Evidência!'}, status=200)
+        
+    except Risco.DoesNotExist:
+        return Response({'erro': 'Risco não encontrado.'}, status=404)
     except Exception as e:
         return Response({'erro': str(e)}, status=500)
 
@@ -1279,3 +1354,15 @@ def gerar_dados_relatorio_pdf(request, auditoria_id):
     except Exception as e:
         print(f"Erro geral no PDF: {e}")
         return Response({"erro": str(e)}, status=500)
+
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def eliminar_conta_total(request):
+    try:
+        user = request.user
+        user.delete() # O Django apaga o perfil, auditorias e riscos em cascata!
+        return Response({'mensagem': 'Todos os seus dados foram eliminados permanentemente.'}, status=200)
+    except Exception as e:
+        return Response({'erro': str(e)}, status=500)

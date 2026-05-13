@@ -162,7 +162,22 @@ function Auditoria() {
     setSeccoes(novasSeccoes);
   };
 
-  const handleEvidencia = (temaId, controloId, perguntaId, ficheiro) => {
+  // 👇 1. SUBSTITUI A FUNÇÃO ANTIGA POR ESTA 👇
+  const handleEvidencia = (temaId, controloId, perguntaId, evento) => {
+    const ficheiro = evento.target.files[0];
+    if (!ficheiro) return;
+
+    // 🚨 VALIDAÇÃO DE SEGURANÇA NO FRONTEND
+    const extensoesPermitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'];
+    const extensao = ficheiro.name.split('.').pop().toLowerCase();
+
+    if (!extensoesPermitidas.includes(extensao)) {
+      alert(`⚠️ Segurança: Ficheiros .${extensao} não são permitidos! Apenas PDFs, Imagens ou Word.`);
+      evento.target.value = null; // Esvazia o ficheiro marado
+      return; // Aborta a operação, não guarda nada!
+    }
+
+    // Se o ficheiro for bom, guarda no state normalmente
     const novasSeccoes = seccoes.map(sec => {
       if (sec.id === temaId) {
         return {
@@ -430,9 +445,11 @@ function Auditoria() {
     <div>
       <label style={{ fontSize: '13px', color: '#4f46e5', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
         📎 {sp.evidencia ? <span style={{ color: '#10b981' }}>Ficheiro: {sp.evidencia.name || 'Anexo Guardado'}</span> : 'Anexar Evidência'}
+        {/* ficheiros possiveis */}
         <input 
-          type="file" accept="image/*,.pdf" 
-          onChange={(e) => handleEvidencia(sec.id, ctrl.id_bd, sp.id_pergunta, e.target.files[0])} 
+          type="file" 
+          accept=".pdf, .jpg, .jpeg, .png, .doc, .docx" 
+          onChange={(e) => handleEvidencia(sec.id, ctrl.id_bd, sp.id_pergunta, e)} 
           style={{ display: 'none' }}
         />
       </label>

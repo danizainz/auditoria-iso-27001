@@ -112,6 +112,24 @@ function Definicoes() {
     } catch (error) { alert("Erro ao guardar."); }
   };
 
+  const handleEliminarConta = async () => {
+    const confirmacao = window.confirm("⚠️ ATENÇÃO: Esta ação é irreversível. Todos os seus dados, auditorias e riscos serão apagados permanentemente de acordo com o RGPD. Deseja continuar?");
+    
+    if (confirmacao) {
+      try {
+        const token = localStorage.getItem('token') || localStorage.getItem('access');
+        await axios.delete(`${process.env.REACT_APP_API_URL}/api/eliminar-conta/`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert("A sua conta e os seus dados foram eliminados com sucesso. Até à próxima!");
+        localStorage.clear(); 
+        window.location.href = "/"; 
+      } catch (err) {
+        alert("Erro ao eliminar a conta. Tente novamente.");
+      }
+    }
+  };
+
   if (loading || !userData) return <Layout><div className="def-page-wrapper">A carregar... 🔄</div></Layout>;
 
   return (
@@ -193,10 +211,26 @@ function Definicoes() {
                   <div onClick={() => { if (!modoEdicaoSeguranca) return; if (!is2FA) iniciarAtivacao2FA(); else setIs2FA(false); }} className={`def-toggle ${modoEdicaoSeguranca ? 'editable' : ''} ${is2FA ? 'active' : ''}`}><div className="def-toggle-knob"></div></div>
                 </div>
               </div>
+
+              {/* ZONA DE PERIGO (RGPD) */}
+              <div className="def-card" style={{ marginTop: '20px', border: '1px solid #fee2e2', backgroundColor: '#fef2f2' }}>
+                <h3 style={{ color: '#991b1b' }}>ELIMINAR CONTA</h3>
+                <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '15px' }}>
+                  Exerça o seu <strong>"Direito ao Esquecimento"</strong>. Ao clicar no botão abaixo, todos os seus dados, auditorias e riscos serão apagados permanentemente dos nossos servidores.
+                </p>
+                <button
+                  onClick={handleEliminarConta}
+                  style={{ backgroundColor: '#ef4444', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', width: '100%' }}
+                >
+                  Apagar a minha Conta e os meus Dados
+                </button>
+              </div>
+
             </div>
           </div>
         )}
 
+            
         {/*MODAL EMAIL*/}
         {showModalEmail && (
           <div className="def-modal-overlay">

@@ -15,6 +15,9 @@ function Riscos() {
 
   const [modalEvidenciaAberto, setModalEvidenciaAberto] = useState(false);
   const [ficheiroEvidencia, setFicheiroEvidencia] = useState(null);
+  const [erroFicheiro, setErroFicheiro] = useState('');
+
+
 
   useEffect(() => {
     const carregarRiscos = async () => {
@@ -126,6 +129,22 @@ function Riscos() {
       default: return { bg: '#f3f4f6', text: '#374151', border: '#9ca3af', label: 'Desconhecido' };
     }
   };
+  const lidarComEscolhaDeFicheiro = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const extensoesPermitidas = ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'];
+    const extensao = file.name.split('.').pop().toLowerCase();
+
+    if (!extensoesPermitidas.includes(extensao)) {
+      setErroFicheiro(`Atenção: Ficheiros .${extensao} não são permitidos por segurança!`);
+      e.target.value = null; 
+      setFicheiroEvidencia(null); 
+    } else {
+      setErroFicheiro('');
+      setFicheiroEvidencia(file);
+    }
+  };
 
   return (
     <Layout>
@@ -139,13 +158,34 @@ function Riscos() {
         </div>
 
         <div style={{ display: 'flex', gap: '15px', marginBottom: '25px' }}>
-          <button onClick={() => setFiltroEstado('Pendente')} style={{ padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', border: 'none', backgroundColor: filtroEstado === 'Pendente' ? '#111827' : '#e5e7eb', color: filtroEstado === 'Pendente' ? 'white' : '#6b7280' }}>
+          <button onClick={() => setFiltroEstado('Pendente')} 
+          style={{ padding: '10px 20px', 
+                  borderRadius: '8px',
+                  fontWeight: 'bold', 
+                  cursor: 'pointer', 
+                  border: 'none', 
+                  backgroundColor: filtroEstado === 'Pendente' ? '#111827' : '#e5e7eb', 
+                  color: filtroEstado === 'Pendente' ? 'white' : '#6b7280' }}>
             🔥 Pendentes ({riscos.filter(r => r.estado === 'Pendente').length})
           </button>
-          <button onClick={() => setFiltroEstado('Em curso')} style={{ padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', border: 'none', backgroundColor: filtroEstado === 'Em curso' ? '#f59e0b' : '#fef3c7', color: filtroEstado === 'Em curso' ? 'white' : '#d97706' }}>
+          <button onClick={() => setFiltroEstado('Em curso')} 
+          style={{ padding: '10px 20px', 
+            borderRadius: '8px', 
+            fontWeight: 'bold', 
+            cursor: 'pointer', 
+            border: 'none', 
+            backgroundColor: filtroEstado === 'Em curso' ? '#f59e0b' : '#fef3c7', 
+            color: filtroEstado === 'Em curso' ? 'white' : '#d97706' }}>
             ⏳ Em Curso ({riscos.filter(r => r.estado === 'Em curso').length})
           </button>
-          <button onClick={() => setFiltroEstado('Resolvido')} style={{ padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', border: 'none', backgroundColor: filtroEstado === 'Resolvido' ? '#10b981' : '#d1fae5', color: filtroEstado === 'Resolvido' ? 'white' : '#10b981' }}>
+          <button onClick={() => setFiltroEstado('Resolvido')} 
+          style={{ 
+            padding: '10px 20px', 
+            borderRadius: '8px', fontWeight: 'bold', 
+            cursor: 'pointer', 
+            border: 'none', 
+            backgroundColor: filtroEstado === 'Resolvido' ? '#10b981' : '#d1fae5', 
+            color: filtroEstado === 'Resolvido' ? 'white' : '#10b981' }}>
             ✅ Resolvidas ({riscos.filter(r => r.estado === 'Resolvido').length})
           </button>
         </div>
@@ -272,7 +312,18 @@ function Riscos() {
               <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '20px', lineHeight: '1.5' }}>Anexa uma prova da resolução para fechar este risco.</p>
               <form onSubmit={concluirAcaoComEvidencia}>
                 <div style={{ marginBottom: '30px' }}>
-                  <input type="file" required onChange={(e) => setFicheiroEvidencia(e.target.files[0])} style={{ width: '100%', padding: '10px', border: '2px dashed #d1d5db', borderRadius: '8px', cursor: 'pointer', backgroundColor: '#f9fafb' }} />
+                  <input 
+                    type="file" 
+                    required 
+                    accept=".pdf, .jpg, .jpeg, .png, .doc, .docx"
+                    onChange={lidarComEscolhaDeFicheiro}
+                    style={{ width: '100%', padding: '10px', border: erroFicheiro ? '2px dashed #ef4444' : '2px dashed #d1d5db', borderRadius: '8px', cursor: 'pointer', backgroundColor: '#f9fafb' }} 
+                  />
+                  {erroFicheiro && (
+                    <p style={{ color: '#ef4444', fontSize: '13px', fontWeight: 'bold', marginTop: '8px' }}>
+                      ⚠️ {erroFicheiro}
+                    </p>
+                  )}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
                   <button type="button" onClick={fecharModalEvidencia} style={{ padding: '10px 20px', border: '1px solid #d1d5db', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', backgroundColor: 'white'}}>Cancelar</button>
