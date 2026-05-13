@@ -136,4 +136,4 @@ SIMPLE_JWT = {
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False  # Permite enviar emails mesmo em modo DEBUG
-DEFAULT_FROM_EMAIL = 'auditoria.iso.27001.pt@gmail.com'
+DEFAULT_FROM_EMAIL = 'nao-responder@auditoria.iso.27001.pt'

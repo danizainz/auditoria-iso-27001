@@ -226,10 +226,11 @@ def registar_utilizador(request):
         Perfil.objects.create(user=user, codigo_otp=codigo)
 
         # O Django envia o email 
+    
         send_mail(
             '🔐 O teu código de verificação - Auditoria ISO',
             f'Olá {nome_completo},\n\nO teu código de acesso é: {codigo}\n\nBem-vindo à plataforma!',
-            'dani.carvalho2928@gmail.com',
+            'nao-responder@auditoria-iso-27001.pt', 
             [email],
             fail_silently=False,
         )
@@ -820,7 +821,7 @@ def solicitar_alteracao_email(request):
     send_mail(
         '📧 Confirmação de Novo Email - Auditoria ISO',
         f'Olá {user.first_name},\n\nO teu código para confirmar o novo email é: {codigo}',
-        'teu-email@gmail.com',
+        'nao-responder@auditoria-iso-27001.pt',
         [novo_email],
         fail_silently=False,
     )
