@@ -420,7 +420,7 @@ def dashboard_real(request):
         total_empresas = minhas_empresas.count()
 
         # 3. FILTRAR RISCOS E AÇÕES CORRETIVAS DO UTILIZADOR
-        meus_riscos = Risco.objects.filter(organizacao__in=minhas_empresas)
+        meus_riscos = Risco.objects.filter(auditoria_origem__in=minhas_auditorias)
         minhas_acoes = AcaoCorretiva.objects.filter(risco__in=meus_riscos)
         
         # TODOS os riscos que ainda não estão concluídos
@@ -1050,8 +1050,7 @@ def concluir_risco(request, risco_id):
 @permission_classes([IsAuthenticated])
 def listar_riscos_pagina(request):
     try:
-        minhas_empresas = Organizacao.objects.filter(auditoria__utilizador=request.user).distinct()
-        riscos = Risco.objects.filter(organizacao__in=minhas_empresas).order_by('-id')
+        riscos = Risco.objects.filter(auditoria_origem__utilizador=request.user).order_by('-id')
         
         lista_riscos = []
         for r in riscos:
