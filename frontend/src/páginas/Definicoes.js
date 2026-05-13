@@ -108,8 +108,15 @@ function Definicoes() {
       await axios.post(`${process.env.REACT_APP_API_URL}/api/atualizar-seguranca/`, { telemovel, dois_fatores_ativo: is2FA }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert("Segurança guardada!"); setModoEdicaoSeguranca(false);
-    } catch (error) { alert("Erro ao guardar."); }
+      
+      // 👇 A LINHA MÁGICA QUE ATUALIZA O ECRÃ NA HORA SEM F5 👇
+      setUserData({ ...userData, telemovel: telemovel, dois_fatores_ativo: is2FA });
+      
+      alert("Segurança guardada!"); 
+      setModoEdicaoSeguranca(false);
+    } catch (error) { 
+      alert("Erro ao guardar."); 
+    }
   };
 
   const handleEliminarConta = async () => {
