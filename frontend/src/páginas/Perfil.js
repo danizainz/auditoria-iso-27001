@@ -34,6 +34,26 @@ function Perfil() {
     fetchUserData();
   }, []);
 
+  const handleExportarDados = async () => {
+    try {
+      const token = localStorage.getItem('token') || localStorage.getItem('access');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/exportar-dados/`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob', 
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'meus_dados_RGPD.json');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      alert("📥 Os seus dados foram exportados com sucesso!");
+    } catch (err) {
+      alert("Erro ao exportar os dados.");
+    }
+  };
+
   if (loading || !userData) {
     return (
       <Layout>
@@ -99,101 +119,56 @@ function Perfil() {
 
           <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', border: '1px solid #e5e7eb', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             <h3 style={{ margin: '0 0 20px 0', color: '#111827', fontSize: '16px' }}>Qualificações</h3>
+            <h3 style={{ margin: '0 0 20px 0', color: '#111827', fontSize: '16px' }}>Qualificações & Privacidade</h3>
             
             <div style={{ display: 'flex', gap: '15px', borderBottom: '1px solid #e5e7eb', marginBottom: '25px' }}>
               <button onClick={() => setAbaQualificacoes('credenciais')} style={{ background: 'none', border: 'none', padding: '10px 5px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: abaQualificacoes === 'credenciais' ? '#4f46e5' : '#6b7280', borderBottom: abaQualificacoes === 'credenciais' ? '2px solid #4f46e5' : '2px solid transparent' }}>Credenciais</button>
               <button onClick={() => setAbaQualificacoes('formacao')} style={{ background: 'none', border: 'none', padding: '10px 5px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: abaQualificacoes === 'formacao' ? '#4f46e5' : '#6b7280', borderBottom: abaQualificacoes === 'formacao' ? '2px solid #4f46e5' : '2px solid transparent' }}>Formação ISO</button>
+              
+              {/* NOVO BOTÃO DA ABA */}
+              <button onClick={() => setAbaQualificacoes('rgpd')} style={{ background: 'none', border: 'none', padding: '10px 5px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: abaQualificacoes === 'rgpd' ? '#10b981' : '#6b7280', borderBottom: abaQualificacoes === 'rgpd' ? '2px solid #10b981' : '2px solid transparent' }}>🛡️ Privacidade (RGPD)</button>
             </div>
 
-            {/* ABA DAS CREDENCIAIS (AGORA COM O FORMULÁRIO COMPLETO) */}
+            {/* ABA: CREDENCIAIS (O teu código original) */}
             {abaQualificacoes === 'credenciais' && (
-              <div>
-                <div style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '15px', marginBottom: '20px' }}>
-                  <h3 style={{ margin: 0, fontSize: '18px', color: '#111827' }}>🎓 Credenciais de Auditor</h3>
-                  <p style={{ margin: '5px 0 0 0', fontSize: '13px', color: '#6b7280' }}>Comprove a sua competência técnica para realizar auditorias normativas.</p>
-                </div>
-
-                <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: '#374151', marginBottom: '8px' }}>
-                    Nº de Registo Profissional
-                  </label>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: IRCA 603952"
-                    value={credenciais.n_registo}
-                    onChange={(e) => setCredenciais({...credenciais, n_registo: e.target.value})}
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #d1d5db', boxSizing: 'border-box', fontSize: '14px' }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: '#374151', marginBottom: '8px' }}>
-                    Certificações Relevantes
-                  </label>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: ISO 27001 Lead Auditor, CISA, CISSP..."
-                    value={credenciais.certificacoes}
-                    onChange={(e) => setCredenciais({...credenciais, certificacoes: e.target.value})}
-                    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #d1d5db', boxSizing: 'border-box', fontSize: '14px' }}
-                  />
-                </div>
-
-                <div style={{ marginBottom: '25px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 'bold', color: '#374151', marginBottom: '8px' }}>
-                    Comprovativo / Certificado
-                  </label>
-                  
-                  <div style={{ 
-                    backgroundColor: '#f8fafc', 
-                    border: '2px dashed #cbd5e1', 
-                    borderRadius: '8px', 
-                    padding: '20px', 
-                    textAlign: 'center',
-                    transition: 'all 0.2s',
-                    cursor: 'pointer'
-                  }}>
-                    <label style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ fontSize: '24px' }}>📄</span>
-                      <span style={{ fontSize: '14px', color: '#4f46e5', fontWeight: '600' }}>
-                        {credenciais.ficheiro ? 'Alterar Ficheiro' : 'Clique para anexar o seu certificado (PDF)'}
-                      </span>
-                      <span style={{ fontSize: '12px', color: '#9ca3af' }}>Tamanho máximo: 5MB</span>
-                      
-                      <input 
-                        type="file" 
-                        accept=".pdf,image/*" 
-                        style={{ display: 'none' }}
-                        onChange={(e) => setCredenciais({...credenciais, ficheiro: e.target.files[0]})}
-                      />
-                    </label>
-                  </div>
-
-                  {credenciais.ficheiro && (
-                    <div style={{ marginTop: '10px', fontSize: '13px', color: '#10b981', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      ✅ Anexado: {credenciais.ficheiro.name}
-                    </div>
-                  )}
-                </div>
-
-                {/* BOTÃO PARA GUARDAR */}
-                <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '1px solid #e5e7eb', paddingTop: '20px' }}>
-                  <button 
-                    onClick={() => alert('Pronto para ligar à API do Django!')}
-                    style={{ backgroundColor: '#10b981', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', boxShadow: '0 2px 4px rgba(16, 185, 129, 0.2)' }}
-                  >
-                    💾 Guardar Credenciais
-                  </button>
-                </div>
-
-              </div>
+               /* ... a tua div das credenciais fica aqui ... */
+               <div>
+                 <p style={{ color: '#6b7280' }}>Área de credenciais (mantém o teu código que lá estava!)</p>
+               </div>
             )}
 
+            {/* ABA: FORMAÇÃO (O teu código original) */}
             {abaQualificacoes === 'formacao' && (
               <div style={{ marginTop: '-10px' }}>
                 <CursosConcluidos isEmbedded={true} />
               </div>
             )}
+
+            {/* 👇 COLA AQUI O CONTEÚDO DA NOVA ABA RGPD 👇 */}
+            {abaQualificacoes === 'rgpd' && (
+              <div style={{ animation: 'fadeIn 0.3s ease-in-out' }}>
+                <div style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '15px', marginBottom: '20px' }}>
+                  <h3 style={{ margin: 0, fontSize: '18px', color: '#111827' }}>Direitos do Titular dos Dados</h3>
+                  <p style={{ margin: '5px 0 0 0', fontSize: '13px', color: '#6b7280' }}>Gerencie as suas informações em conformidade com o Regulamento Geral sobre a Proteção de Dados.</p>
+                </div>
+
+                <div style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                  <h4 style={{ margin: '0 0 10px 0', color: '#166534', fontSize: '15px' }}>Direito à Portabilidade (Art. 20.º)</h4>
+                  <p style={{ margin: '0 0 15px 0', color: '#15803d', fontSize: '13px' }}>
+                    Tem o direito de receber os dados pessoais que lhe dizem respeito num formato estruturado, de uso corrente e de leitura automática.
+                  </p>
+                  <button 
+                    onClick={handleExportarDados}
+                    style={{ backgroundColor: '#10b981', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  >
+                    📥 Exportar Dados para JSON
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* */}
+            
+            
           </div>
 
         </div>

@@ -1366,3 +1366,36 @@ def eliminar_conta_total(request):
         return Response({'mensagem': 'Todos os seus dados foram eliminados permanentemente.'}, status=200)
     except Exception as e:
         return Response({'erro': str(e)}, status=500)
+
+
+
+from django.http import HttpResponse
+
+# ==========================================
+# 🚨 DIREITO À PORTABILIDADE (RGPD)
+# ==========================================
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def exportar_dados_pessoais(request):
+    try:
+        user = request.user
+        dados = {
+            "informacao_pessoal": {
+                "id_utilizador": user.id,
+                "email": user.email,
+                "nome_primeiro": user.first_name,
+                "nome_ultimo": user.last_name,
+                "data_registo": user.date_joined.strftime("%Y-%m-%d %H:%M:%S"),
+                "ultimo_login": user.last_login.strftime("%Y-%m-%d %H:%M:%S") if user.last_login else "Nunca",
+            },
+            "tratamento_de_dados": {
+                "finalidade": "Geração de relatórios de auditoria ISO 27001",
+                "nota_rgpd": "Estes dados são exportados ao abrigo do Artigo 20º do RGPD (Direito à Portabilidade)."
+            }
+        }
+        
+        response = HttpResponse(json.dumps(dados, indent=4), content_type='application/json')
+        response['Content-Disposition'] = f'attachment; filename="dados_pessoais_RGPD.json"'
+        return response
+    except Exception as e:
+        return Response({'erro': str(e)}, status=500)

@@ -12,6 +12,7 @@ from .views import (
     gerar_qr_code_2fa, confirmar_ativacao_2fa, login_step_1, login_step_2_verify,
     alterar_password_2fa, solicitar_alteracao_email, confirmar_novo_email, atualizar_progresso,
     listar_riscos_pagina, tratar_risco, concluir_risco, gerar_dados_relatorio_pdf, eliminar_conta_total,
+    exportar_dados_pessoais,
 )
 
 from .views import atualizar_progresso
@@ -77,5 +78,5 @@ urlpatterns = [
     # 10. ROTA PARA ELIMINAR CONTA (RGPD)
     path('eliminar-conta/', views.eliminar_conta_total, name='eliminar-conta'),
 
-
+    path('exportar-dados/', views.exportar_dados_pessoais, name='exportar_dados_pessoais'),
 ]
