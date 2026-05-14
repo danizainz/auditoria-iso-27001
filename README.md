@@ -3,7 +3,7 @@
 > Uma plataforma web robusta para a gestão automatizada de auditorias de cibersegurança, em conformidade com a norma **ISO/IEC 27001:2022**.
 
 🔗 **Links do Projeto:**
-- [📄 Ler o Relatório Técnico (PDF)](./Projeto_2_a22209980.pdf)
+- [📄 Ler o Relatório Técnico (PDF)](./Projeto 2_a22209980.pdf)
 - [🎥 Ver Vídeo de Apresentação (YouTube)](https://www.youtube.com/playlist?list=PLINeKvdsJRYsJ7nAsQ6T9NbA8P2iELODE)
 
 Este projeto utiliza uma arquitetura desacoplada (Decoupled Architecture), focada em **Privacy by Design**, conformidade estrita com o **RGPD**, e análise prescritiva suportada por **IA**.
