@@ -3,7 +3,7 @@
 > Uma plataforma web robusta para a gestão automatizada de auditorias de cibersegurança, em conformidade com a norma **ISO/IEC 27001:2022**.
 
 🔗 **Links do Projeto:**
-- [📄 Ler o Relatório Técnico (PDF)](./Projeto 2_a22209980.pdf)
+- [📄 Ler o Relatório Técnico (PDF)](./Projeto_2_a22209980.pdf)
 - [🎥 Ver Vídeo de Apresentação (YouTube)](https://www.youtube.com/playlist?list=PLINeKvdsJRYsJ7nAsQ6T9NbA8P2iELODE)
 
 Este projeto utiliza uma arquitetura desacoplada (Decoupled Architecture), focada em **Privacy by Design**, conformidade estrita com o **RGPD**, e análise prescritiva suportada por **IA**.
@@ -21,7 +21,7 @@ Este projeto utiliza uma arquitetura desacoplada (Decoupled Architecture), focad
 - **Defesa Ativa:** Filtros de segurança no upload de evidências para bloqueio de ficheiros maliciosos (.exe, .sql).
 
 ### 🧠 Consultor Virtual (IA Gemini)
-- **Análise Prescritiva:** Integração com o modelo **Google Gemini 1.5 Flash** para analisar não-conformidades e sugerir planos de ação corretiva em tempo real.
+- **Análise Prescritiva:** Integração com o modelo **Google Gemini 2.5 Flash** para analisar não-conformidades e sugerir planos de ação corretiva em tempo real.
 
 ### 📋 Motor de Auditoria e Relatórios
 - **Checklist ISO 27001:2022:** Avaliação completa dos controlos do Anexo A.
