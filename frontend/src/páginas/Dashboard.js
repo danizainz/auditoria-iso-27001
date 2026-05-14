@@ -175,7 +175,7 @@ function Dashboard() {
           {/* TABELA TOP RISCOS */}
           <div style={{ backgroundColor: 'white', padding: '0', borderRadius: '12px', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
             <div style={{ backgroundColor: '#1e3a8a', padding: '15px', color: 'white', textAlign: 'center' }}>
-              <h3 style={{ margin: 0, fontSize: '15px' }}>Top Entradas de Risco (Auditoria)</h3>
+              <h3 style={{ margin: 0, fontSize: '15px' }}>Top Entradas de Risco (Auditorias)</h3>
             </div>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
               <thead>
@@ -189,7 +189,7 @@ function Dashboard() {
                 {riscosQuentes.length === 0 ? (
                   <tr>
                     <td colSpan="3" style={{ padding: '20px', textAlign: 'center', color: '#6b7280' }}>
-                      Nenhum risco encontrado! Parabéns 🎉
+                      Nenhum risco Crítico ou Alto detetado. Boa auditoria!
                     </td>
                   </tr>
                 ) : (

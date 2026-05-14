@@ -420,18 +420,20 @@ def dashboard_real(request):
         total_empresas = minhas_empresas.count()
 
         # 3. FILTRAR RISCOS E AÇÕES CORRETIVAS DO UTILIZADOR
+        # (Já com a correção dos fantasmas incluída!)
         meus_riscos = Risco.objects.filter(auditoria_origem__in=minhas_auditorias)
         minhas_acoes = AcaoCorretiva.objects.filter(risco__in=meus_riscos)
         
-        # TODOS os riscos que ainda não estão concluídos
+        # TODOS os riscos que ainda não estão concluídos (Ativos)
         riscos_ativos = meus_riscos.exclude(acoes__status='Concluída')
         total_riscos_ativos = riscos_ativos.count() 
 
-        total_riscos = meus_riscos.count() or 1
-        r_critico = (meus_riscos.filter(nivel='Crítico').count() / total_riscos) * 100
-        r_alto = (meus_riscos.filter(nivel='Alto').count() / total_riscos) * 100
-        r_medio = (meus_riscos.filter(nivel='Médio').count() / total_riscos) * 100
-        r_baixo = (meus_riscos.filter(nivel='Baixo').count() / total_riscos) * 100
+        # CORREÇÃO DO GRÁFICO: Agora calcula a percentagem apenas com os riscos ativos!
+        total_riscos_grafico = riscos_ativos.count() or 1
+        r_critico = (riscos_ativos.filter(nivel='Crítico').count() / total_riscos_grafico) * 100
+        r_alto = (riscos_ativos.filter(nivel='Alto').count() / total_riscos_grafico) * 100
+        r_medio = (riscos_ativos.filter(nivel='Médio').count() / total_riscos_grafico) * 100
+        r_baixo = (riscos_ativos.filter(nivel='Baixo').count() / total_riscos_grafico) * 100
 
         total_acoes = minhas_acoes.count() or 1
         concluidas = (minhas_acoes.filter(status='Concluída').count() / total_acoes) * 100
