@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenRefreshView
-
+from django.http import HttpResponse
 
 from core.views import LoginComEmailView
 
@@ -10,6 +10,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('loaderio-6958db324d58536c7093cb7e50bfe3fb/', lambda request: HttpResponse('loaderio-6958db324d58536c7093cb7e50bfe3fb')),
     path('admin/', admin.site.urls), # ADMIN NORMAL DO DJANGO
     
     # ROTA DE LOGIN 
