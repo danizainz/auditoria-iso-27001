@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from django.http import HttpResponse
 
 from . import views
 
@@ -65,6 +66,7 @@ urlpatterns = [
     path('confirmar-novo-email/', confirmar_novo_email, name='confirmar-email'),
     path('alterar-password-2fa/', alterar_password_2fa, name='alterar-pass-2fa'),
     path('atualizar-progresso/', atualizar_progresso, name='atualizar-progresso'),
+    path('loaderio-6958db324d58536c7093cb7e50bfe3fb/', lambda request: HttpResponse('loaderio-6958db324d58536c7093cb7e50bfe3fb')),
 
 
     path('riscos-lista/', views.listar_riscos_pagina, name='riscos_lista'),
